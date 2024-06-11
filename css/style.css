@@ -180,7 +180,7 @@ body.showCart .container, body.showCart header {
 
 .cartTab .listCart .item {
     display: grid;
-    grid-template-columns: 70px 150px 50px 50px 1fr;
+    grid-template-columns: 70px 140px 50px 50px 1fr;
     gap: 10px;
     text-align: center;
     align-items: center;
@@ -327,5 +327,11 @@ footer svg {
     .cartTab {
         width: 100%;
         inset: 0 -450px 0 auto;
+    }
+
+    .cartTab .listCart .item {
+        grid-template-columns: 60px 100px 35px 35px 1fr;
+        gap: 8px;
+        font-size: 14px;
     }
 }
