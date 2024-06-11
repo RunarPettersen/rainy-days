@@ -4,6 +4,7 @@ let iconCart = document.querySelector('.icon-cart');
 let iconCartSpan = document.querySelector('.icon-cart span');
 let body = document.querySelector('body');
 let closeCart = document.querySelector('.close');
+let productListTitle = document.querySelector('.title'); // Assuming the product list title has class 'title'
 let products = [];
 let cart = [];
 
@@ -17,36 +18,62 @@ closeCart.addEventListener('click', () => {
 const getProductIdFromURL = () => {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('id');
-}
+};
 
 const addDataToHTML = () => {
     const productId = getProductIdFromURL();
-    if (products.length > 0) {
-        myProductHTML.innerHTML = '';
-        products.forEach(product => {
-            if (!productId || product.id == productId) {
-                let newProduct = document.createElement('div');
-                newProduct.dataset.id = product.id;
-                newProduct.classList.add('item');
-                newProduct.innerHTML =
-                    `<img src="../${product.image}" alt="">
+
+    if (productId) {
+        // If a specific product ID is present in the URL, hide the product list title and container
+        productListTitle.style.display = 'none';
+        myProductHTML.style.display = 'none';
+
+        // Find and display the specific product
+        const product = products.find(product => product.id == productId);
+        if (product) {
+            let productDetail = document.createElement('div');
+            productDetail.classList.add('item');
+            productDetail.innerHTML = `
+                <img src="../${product.image}" alt="">
                 <h2>${product.title}</h2>
                 <div class="description">${product.description}</div>
                 <div class="price">$${product.price}</div>
-                <button class="addCart">Add To Cart</button>`;
+                <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
+            myProductHTML.appendChild(productDetail);
+            myProductHTML.style.display = 'block'; // Ensure the specific product is displayed
+        }
+    } else {
+        // If no specific product ID is present in the URL, display the product list
+        if (products.length > 1) {
+            productListTitle.style.display = 'block'; // Show the title
+            myProductHTML.style.display = 'block';   // Show the product list container
+            myProductHTML.innerHTML = '';
+            products.forEach(product => {
+                let newProduct = document.createElement('div');
+                newProduct.dataset.id = product.id;
+                newProduct.classList.add('item');
+                newProduct.innerHTML = `
+                    <img src="../${product.image}" alt="">
+                    <h2>${product.title}</h2>
+                    <div class="description">${product.description}</div>
+                    <div class="price">$${product.price}</div>
+                    <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
                 myProductHTML.appendChild(newProduct);
-            }
-        });
+            });
+        } else {
+            productListTitle.style.display = 'none'; // Hide the title
+            myProductHTML.style.display = 'none';   // Hide the product list container
+        }
     }
-}
+};
 
 myProductHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
     if (positionClick.classList.contains('addCart')) {
-        let id_product = positionClick.parentElement.dataset.id;
+        let id_product = positionClick.dataset.id;
         addToCart(id_product);
     }
-})
+});
 
 const addToCart = (product_id) => {
     let positionThisProductInCart = cart.findIndex((value) => value.product_id == product_id);
@@ -65,11 +92,11 @@ const addToCart = (product_id) => {
     }
     addCartToHTML();
     addCartToMemory();
-}
+};
 
 const addCartToMemory = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
-}
+};
 
 const addCartToHTML = () => {
     listCartHTML.innerHTML = '';
@@ -107,7 +134,7 @@ const addCartToHTML = () => {
         listCartHTML.appendChild(totalDiv);
     }
     iconCartSpan.innerText = totalQuantity;
-}
+};
 
 listCartHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
@@ -119,7 +146,7 @@ listCartHTML.addEventListener('click', (event) => {
         }
         changeQuantityCart(product_id, type);
     }
-})
+});
 
 const changeQuantityCart = (product_id, type) => {
     let positionItemInCart = cart.findIndex((value) => value.product_id == product_id);
@@ -141,7 +168,7 @@ const changeQuantityCart = (product_id, type) => {
     }
     addCartToHTML();
     addCartToMemory();
-}
+};
 
 const initApp = () => {
     fetch('../products.json')
@@ -153,6 +180,7 @@ const initApp = () => {
                 cart = JSON.parse(localStorage.getItem('cart'));
                 addCartToHTML();
             }
-        })
-}
+        });
+};
+
 initApp();
