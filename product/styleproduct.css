@@ -1,0 +1,58 @@
+.myProduct .item img {
+    width: 90%;
+    filter: drop-shadow(0 20px 20px #000);
+    border-radius: 20px;
+}
+
+.myProduct {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+}
+
+.myProduct .item {
+    background-color: #739db1;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.myProduct .item h2 {
+    font-weight: 500px;
+    font-size: large;
+}
+
+.myProduct .item button {
+    background-color: #666;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 992px) {
+    .listProduct {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .logo img {
+        width: 90vw;
+    }
+
+    .menu-line {
+        width: 80vw;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .listProduct {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .listProduct {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
