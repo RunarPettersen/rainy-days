@@ -319,4 +319,8 @@ footer svg {
     .listProduct {
         grid-template-columns: repeat(1, 1fr);
     }
+
+    .main-image img {
+        width: 300px;
+    }
 }
