@@ -31,6 +31,7 @@ const addDataToHTML = () => {
         // Find and display the specific product
         const product = products.find(product => product.id == productId);
         if (product) {
+            let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
             let productDetail = document.createElement('div');
             productDetail.classList.add('item');
             productDetail.innerHTML = `
@@ -38,6 +39,7 @@ const addDataToHTML = () => {
                 <h2>${product.title}</h2>
                 <div class="description">${product.description}</div>
                 <div class="price">$${product.price}</div>
+                <select class="sizeSelector">${sizesOptions}</select>
                 <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
             myProductHTML.appendChild(productDetail);
             myProductHTML.style.display = 'block'; // Ensure the specific product is displayed
@@ -52,11 +54,13 @@ const addDataToHTML = () => {
                 let newProduct = document.createElement('div');
                 newProduct.dataset.id = product.id;
                 newProduct.classList.add('item');
+                let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
                 newProduct.innerHTML = `
                     <img src="../${product.image}" alt="">
                     <h2>${product.title}</h2>
                     <div class="description">${product.description}</div>
                     <div class="price">$${product.price}</div>
+                    <select class="sizeSelector">${sizesOptions}</select>
                     <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
                 myProductHTML.appendChild(newProduct);
             });
@@ -71,24 +75,24 @@ myProductHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
     if (positionClick.classList.contains('addCart')) {
         let id_product = positionClick.dataset.id;
-        addToCart(id_product);
+        let size = positionClick.parentElement.querySelector('.sizeSelector').value;
+        addToCart(id_product, size);
     }
 });
 
-const addToCart = (product_id) => {
-    let positionThisProductInCart = cart.findIndex((value) => value.product_id == product_id);
-    if (cart.length <= 0) {
-        cart = [{
-            product_id: product_id,
-            quantity: 1
-        }];
-    } else if (positionThisProductInCart < 0) {
+const addToCart = (product_id, size) => {
+    if (!size) {
+        size = 'Undefined'; // Default size if not defined
+    }
+    let positionThisProductInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
+    if (positionThisProductInCart < 0) {
         cart.push({
             product_id: product_id,
+            size: size,
             quantity: 1
         });
     } else {
-        cart[positionThisProductInCart].quantity = cart[positionThisProductInCart].quantity + 1;
+        cart[positionThisProductInCart].quantity += 1;
     }
     addCartToHTML();
     addCartToMemory();
@@ -104,10 +108,11 @@ const addCartToHTML = () => {
     let totalPrice = 0;
     if (cart.length > 0) {
         cart.forEach(item => {
-            totalQuantity = totalQuantity + item.quantity;
+            totalQuantity += item.quantity;
             let newItem = document.createElement('div');
             newItem.classList.add('item');
             newItem.dataset.id = item.product_id;
+            newItem.dataset.size = item.size;
             let positionProduct = products.findIndex((value) => value.id == item.product_id);
             let info = products[positionProduct];
             listCartHTML.appendChild(newItem);
@@ -117,6 +122,9 @@ const addCartToHTML = () => {
             </div>
             <div class="title">
                 ${info.title}
+            </div>
+            <div class="size">
+                Size: ${item.size}
             </div>
             <div class="totalPrice">$${info.price * item.quantity}</div>
             <div class="quantity">
@@ -140,21 +148,22 @@ listCartHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
     if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
         let product_id = positionClick.parentElement.parentElement.dataset.id;
+        let size = positionClick.parentElement.parentElement.dataset.size;
         let type = 'minus';
         if (positionClick.classList.contains('plus')) {
             type = 'plus';
         }
-        changeQuantityCart(product_id, type);
+        changeQuantityCart(product_id, size, type);
     }
 });
 
-const changeQuantityCart = (product_id, type) => {
-    let positionItemInCart = cart.findIndex((value) => value.product_id == product_id);
+const changeQuantityCart = (product_id, size, type) => {
+    let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
     if (positionItemInCart >= 0) {
         let info = cart[positionItemInCart];
         switch (type) {
             case 'plus':
-                cart[positionItemInCart].quantity = cart[positionItemInCart].quantity + 1;
+                cart[positionItemInCart].quantity += 1;
                 break;
             default:
                 let changeQuantity = cart[positionItemInCart].quantity - 1;

@@ -10,31 +10,30 @@ let cart = [];
 
 iconCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
-})
+});
 closeCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
-})
+});
 
 const getRandomProduct = () => {
     const randomIndex = Math.floor(Math.random() * products.length);
     return products[randomIndex];
 };
 
+const addProductToCart = (productId, size) => {
+    if (!size) {
+        size = 'Undefined'; // Default size if not defined
+    }
 
-const addProductToCart = (productId) => {
-    let positionThisProductInCart = cart.findIndex((value) => value.product_id == productId);
-    if (cart.length <= 0) {
-        cart = [{
-            product_id: productId,
-            quantity: 1
-        }];
-    } else if (positionThisProductInCart < 0) {
+    let positionThisProductInCart = cart.findIndex((value) => value.product_id == productId && value.size == size);
+    if (positionThisProductInCart < 0) {
         cart.push({
             product_id: productId,
+            size: size,
             quantity: 1
         });
     } else {
-        cart[positionThisProductInCart].quantity = cart[positionThisProductInCart].quantity + 1;
+        cart[positionThisProductInCart].quantity += 1;
     }
     addCartToHTML();
     addCartToMemory();
@@ -67,11 +66,17 @@ const updateDetailWithRandomProduct = () => {
     detail.querySelector('.main-title h1').innerText = thisProduct.title;
     detail.querySelector('.main-price').innerText = '$' + thisProduct.price;
     detail.querySelector('.main-description').innerText = thisProduct.description;
+
+    // Populate size selector
+    const sizeSelector = detail.querySelector('.sizeSelector');
+    sizeSelector.innerHTML = thisProduct.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
+
     const addCartButton = detail.querySelector('.addCart');
     addCartButton.dataset.id = thisProduct.id;
 
     const newAddToCartHandler = () => {
-        addProductToCart(thisProduct.id);
+        const selectedSize = sizeSelector.value;
+        addProductToCart(thisProduct.id, selectedSize);
     };
 
     if (addCartButton._addToCartHandler) {
@@ -88,10 +93,12 @@ const addDataToHTML = () => {
             let newProduct = document.createElement('div');
             newProduct.dataset.id = product.id;
             newProduct.classList.add('item');
+            let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
             newProduct.innerHTML =
                 `<a href="product/index.html?id=${product.id}"><img src="${product.image}" alt=""></a>
                 <h2>${product.title}</h2>
                 <div class="price">$${product.price}</div>
+                <select class="sizeSelector">${sizesOptions}</select>
                 <button class="addCart">Add To Cart</button>`;
             listProductHTML.appendChild(newProduct);
         });
@@ -102,28 +109,10 @@ listProductHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
     if (positionClick.classList.contains('addCart')) {
         let id_product = positionClick.parentElement.dataset.id;
-        addToCart(id_product);
+        let size = positionClick.parentElement.querySelector('.sizeSelector').value;
+        addProductToCart(id_product, size);
     }
 });
-
-const addToCart = (product_id) => {
-    let positionThisProductInCart = cart.findIndex((value) => value.product_id == product_id);
-    if (cart.length <= 0) {
-        cart = [{
-            product_id: product_id,
-            quantity: 1
-        }];
-    } else if (positionThisProductInCart < 0) {
-        cart.push({
-            product_id: product_id,
-            quantity: 1
-        });
-    } else {
-        cart[positionThisProductInCart].quantity = cart[positionThisProductInCart].quantity + 1;
-    }
-    addCartToHTML();
-    addCartToMemory();
-};
 
 const addCartToMemory = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -135,10 +124,11 @@ const addCartToHTML = () => {
     let totalPrice = 0;
     if (cart.length > 0) {
         cart.forEach(item => {
-            totalQuantity = totalQuantity + item.quantity;
+            totalQuantity += item.quantity;
             let newItem = document.createElement('div');
             newItem.classList.add('item');
             newItem.dataset.id = item.product_id;
+            newItem.dataset.size = item.size;
             let positionProduct = products.findIndex((value) => value.id == item.product_id);
             let info = products[positionProduct];
             listCartHTML.appendChild(newItem);
@@ -148,6 +138,9 @@ const addCartToHTML = () => {
             </div>
             <div class="title">
                 ${info.title}
+            </div>
+            <div class="size">
+                Size: ${item.size}
             </div>
             <div class="totalPrice">$${info.price * item.quantity}</div>
             <div class="quantity">
@@ -171,21 +164,22 @@ listCartHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
     if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
         let product_id = positionClick.parentElement.parentElement.dataset.id;
+        let size = positionClick.parentElement.parentElement.dataset.size;
         let type = 'minus';
         if (positionClick.classList.contains('plus')) {
             type = 'plus';
         }
-        changeQuantityCart(product_id, type);
+        changeQuantityCart(product_id, size, type);
     }
 });
 
-const changeQuantityCart = (product_id, type) => {
-    let positionItemInCart = cart.findIndex((value) => value.product_id == product_id);
+const changeQuantityCart = (product_id, size, type) => {
+    let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
     if (positionItemInCart >= 0) {
         let info = cart[positionItemInCart];
         switch (type) {
             case 'plus':
-                cart[positionItemInCart].quantity = cart[positionItemInCart].quantity + 1;
+                cart[positionItemInCart].quantity += 1;
                 break;
             default:
                 let changeQuantity = cart[positionItemInCart].quantity - 1;
