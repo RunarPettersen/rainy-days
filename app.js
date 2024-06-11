@@ -48,7 +48,22 @@ const updateDetailWithRandomProduct = () => {
         return;
     }
 
-    detail.querySelector('.main-image img').src = thisProduct.image;
+    // Create the anchor element
+    const anchor = document.createElement('a');
+    anchor.href = `product/index.html?id=${thisProduct.id}`;
+
+    // Create the image element
+    const img = document.createElement('img');
+    img.src = thisProduct.image;
+
+    // Append the image to the anchor
+    anchor.appendChild(img);
+
+    // Replace the existing image with the new anchor-wrapped image
+    const mainImageContainer = detail.querySelector('.main-image');
+    mainImageContainer.innerHTML = ''; // Clear existing content
+    mainImageContainer.appendChild(anchor);
+
     detail.querySelector('.main-title h1').innerText = thisProduct.title;
     detail.querySelector('.main-price').innerText = '$' + thisProduct.price;
     detail.querySelector('.main-description').innerText = thisProduct.description;
