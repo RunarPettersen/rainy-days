@@ -1,12 +1,18 @@
+// Select necessary elements
 let myProductHTML = document.querySelector('.myProduct');
 let listCartHTML = document.querySelector('.listCart');
 let iconCart = document.querySelector('.icon-cart');
 let iconCartSpan = document.querySelector('.icon-cart span');
 let body = document.querySelector('body');
 let closeCart = document.querySelector('.close');
+let checkoutCartList = document.querySelector('.returnCart .list');
+let totalQuantityHTML = document.querySelector('.totalQuantity');
+let totalPriceHTML = document.querySelector('.totalPrice');
+let listCart = [];
 let products = [];
 let cart = [];
 
+// Function to toggle the cart visibility
 iconCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
 });
@@ -14,11 +20,74 @@ closeCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
 });
 
-const getProductIdFromURL = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('id');
+// Check for existing cart in cookies
+function checkCart() {
+    var cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('listCart='));
+    if (cookieValue) {
+        listCart = JSON.parse(cookieValue.split('=')[1]);
+    }
+    console.log('Checked Cart:', listCart);
 }
 
+checkCart();
+addCartToHTML();
+
+// Function to update the cart in the DOM
+function addCartToHTML() {
+    console.log('Updating Cart HTML...');
+    checkoutCartList.innerHTML = '';
+    let totalQuantity = 0;
+    let totalPrice = 0;
+
+    if (listCart.length > 0) {
+        listCart.forEach(product => {
+            if (product) {
+                let newP = document.createElement('div');
+                newP.classList.add('item');
+                newP.innerHTML = `
+                    <img src="../${product.image}" alt="">
+                    <div class="info">
+                        <div class="name">${product.title}</div>
+                        <div class="price">$${product.price}</div>
+                    </div>
+                    <div class="quantity">${product.quantity}</div>
+                    <div class="returnPrice">$${product.price * product.quantity}</div>`;
+                checkoutCartList.appendChild(newP);
+                totalQuantity += product.quantity;
+                totalPrice += product.price * product.quantity;
+            }
+        });
+    }
+    totalQuantityHTML.innerHTML = totalQuantity;
+    totalPriceHTML.innerText = '$' + totalPrice;
+
+    console.log('Cart Updated:', { totalQuantity, totalPrice });
+}
+
+// Fetch product data and initialize the app
+const initApp = () => {
+    fetch('../products.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            products = data;
+            console.log('Products fetched:', products);
+            addDataToHTML();
+            if (localStorage.getItem('cart')) {
+                cart = JSON.parse(localStorage.getItem('cart'));
+                updateCartHTML();
+            }
+        })
+        .catch(error => console.error('There was a problem with the fetch operation:', error));
+}
+
+// Function to add product data to the HTML
 const addDataToHTML = () => {
     const productId = getProductIdFromURL();
     if (products.length > 0) {
@@ -28,18 +97,26 @@ const addDataToHTML = () => {
                 let newProduct = document.createElement('div');
                 newProduct.dataset.id = product.id;
                 newProduct.classList.add('item');
-                newProduct.innerHTML =
-                    `<img src="../${product.image}" alt="">
-                <h2>${product.title}</h2>
-                <div class="description">${product.description}</div>
-                <div class="price">$${product.price}</div>
-                <button class="addCart">Add To Cart</button>`;
+                newProduct.innerHTML = `
+                    <img src="../${product.image}" alt="">
+                    <h2>${product.title}</h2>
+                    <div class="description">${product.description}</div>
+                    <div class="price">$${product.price}</div>
+                    <button class="addCart">Add To Cart</button>`;
                 myProductHTML.appendChild(newProduct);
             }
         });
+        console.log('Added products to HTML:', myProductHTML.innerHTML);
     }
 }
 
+// Get product ID from the URL
+const getProductIdFromURL = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('id');
+}
+
+// Event listener for adding items to the cart
 myProductHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
     if (positionClick.classList.contains('addCart')) {
@@ -48,6 +125,7 @@ myProductHTML.addEventListener('click', (event) => {
     }
 })
 
+// Function to add items to the cart
 const addToCart = (product_id) => {
     let positionThisProductInCart = cart.findIndex((value) => value.product_id == product_id);
     if (cart.length <= 0) {
@@ -61,23 +139,26 @@ const addToCart = (product_id) => {
             quantity: 1
         });
     } else {
-        cart[positionThisProductInCart].quantity = cart[positionThisProductInCart].quantity + 1;
+        cart[positionThisProductInCart].quantity += 1;
     }
-    addCartToHTML();
-    addCartToMemory();
+    console.log('Cart after adding product:', cart);
+    updateCartHTML();
+    saveCartToMemory();
 }
 
-const addCartToMemory = () => {
+// Function to save the cart to local storage
+const saveCartToMemory = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-const addCartToHTML = () => {
+// Function to update the cart in the DOM
+const updateCartHTML = () => {
     listCartHTML.innerHTML = '';
     let totalQuantity = 0;
     let totalPrice = 0;
     if (cart.length > 0) {
         cart.forEach(item => {
-            totalQuantity = totalQuantity + item.quantity;
+            totalQuantity += item.quantity;
             let newItem = document.createElement('div');
             newItem.classList.add('item');
             newItem.dataset.id = item.product_id;
@@ -107,8 +188,10 @@ const addCartToHTML = () => {
         listCartHTML.appendChild(totalDiv);
     }
     iconCartSpan.innerText = totalQuantity;
+    console.log('Updated Cart HTML in listCart:', listCartHTML.innerHTML);
 }
 
+// Event listener for changing item quantities in the cart
 listCartHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
     if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
@@ -121,13 +204,14 @@ listCartHTML.addEventListener('click', (event) => {
     }
 })
 
+// Function to change item quantities in the cart
 const changeQuantityCart = (product_id, type) => {
     let positionItemInCart = cart.findIndex((value) => value.product_id == product_id);
     if (positionItemInCart >= 0) {
         let info = cart[positionItemInCart];
         switch (type) {
             case 'plus':
-                cart[positionItemInCart].quantity = cart[positionItemInCart].quantity + 1;
+                cart[positionItemInCart].quantity += 1;
                 break;
             default:
                 let changeQuantity = cart[positionItemInCart].quantity - 1;
@@ -139,20 +223,9 @@ const changeQuantityCart = (product_id, type) => {
                 break;
         }
     }
-    addCartToHTML();
-    addCartToMemory();
+    updateCartHTML();
+    saveCartToMemory();
 }
 
-const initApp = () => {
-    fetch('../products.json')
-        .then(response => response.json())
-        .then(data => {
-            products = data;
-            addDataToHTML();
-            if (localStorage.getItem('cart')) {
-                cart = JSON.parse(localStorage.getItem('cart'));
-                addCartToHTML();
-            }
-        })
-}
+// Initialize the app
 initApp();

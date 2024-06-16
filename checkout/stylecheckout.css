@@ -1,5 +1,93 @@
+.myCheckoutCart {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px;
+    padding: 20px;
+}
 
+.myCheckoutCart .right {
+    background-color: #739db1;
+    border-radius: 20px;
+    padding: 40px;
+    color: #000;
+}
 
+.myCheckoutCart .list img {
+    height: 70px;
+}
+
+.myCheckoutCart .right .form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 20px;
+}
+
+.myCheckoutCart .form .group:nth-child(-n+3) {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.myCheckoutCart .form input,
+.myCheckoutCart .form select {
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-top: 10px;
+    border: none;
+    background-color: lightblue;
+}
+
+.myCheckoutCart .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.myCheckoutCart .row div:nth-child(2) {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.buttonCheckout {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #0a3641;
+}
+
+.returnCart h1 {
+    border-top: 1px solid #fff;
+    padding: 20px 0;
+}
+
+.returnCart .list .item img {
+    height: 80px;
+}
+
+.returnCart .item {
+    display: grid;
+    grid-template-columns: 80px 1fr 50px 80px;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 0 10px;
+    box-shadow: 0 10px 20px #666;
+    border-radius: 20px;
+}
+
+.returnCart .item .name,
+.returnCart .item .returnPrice {
+    font-size: x-large;
+    font-weight: bold;
+}
 
 .myProduct .item img {
     width: 90%;
