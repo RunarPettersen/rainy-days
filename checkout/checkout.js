@@ -1,4 +1,3 @@
-// Select necessary elements
 let myProductHTML = document.querySelector('.myProduct');
 let listCartHTML = document.querySelector('.listCart');
 let iconCart = document.querySelector('.icon-cart');
@@ -12,7 +11,6 @@ let listCart = [];
 let products = [];
 let cart = [];
 
-// Function to toggle the cart visibility
 iconCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
 });
@@ -20,7 +18,6 @@ closeCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
 });
 
-// Check for existing cart in cookies
 function checkCart() {
     var cookieValue = document.cookie
         .split('; ')
@@ -34,7 +31,6 @@ function checkCart() {
 checkCart();
 addCartToHTML();
 
-// Function to update the cart in the DOM
 function addCartToHTML() {
     console.log('Updating Cart HTML...');
     checkoutCartList.innerHTML = '';
