@@ -1,22 +1,22 @@
-.myCheckoutCart {
+.checkoutLayout {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 50px;
     padding: 20px;
 }
 
-.myCheckoutCart .right {
+.checkoutLayout .right {
     background-color: #739db1;
     border-radius: 20px;
     padding: 40px;
     color: #000;
 }
 
-.myCheckoutCart .list img {
+.checkoutLayout .list img {
     height: 70px;
 }
 
-.myCheckoutCart .right .form {
+.checkoutLayout .right .form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -24,13 +24,13 @@
     padding-bottom: 20px;
 }
 
-.myCheckoutCart .form .group:nth-child(-n+3) {
+.checkoutLayout .form .group:nth-child(-n+3) {
     grid-column-start: 1;
     grid-column-end: 3;
 }
 
-.myCheckoutCart .form input,
-.myCheckoutCart .form select {
+.checkoutLayout .form input,
+.checkoutLayout .form select {
     width: 100%;
     padding: 10px 20px;
     box-sizing: border-box;
@@ -40,14 +40,14 @@
     background-color: lightblue;
 }
 
-.myCheckoutCart .row {
+.checkoutLayout .row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
 }
 
-.myCheckoutCart .row div:nth-child(2) {
+.checkoutLayout .row div:nth-child(2) {
     font-weight: bold;
     font-size: x-large;
 }

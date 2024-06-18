@@ -160,6 +160,11 @@ body.showCart .container, body.showCart header {
     height: 70px;
 }
 
+.cartTab a {
+    text-decoration: none;
+    color: #000;
+}
+
 .cartTab .btn button {
     background-color: #477286;
     border-color: #739db1;

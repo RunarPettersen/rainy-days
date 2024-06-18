@@ -22,7 +22,7 @@ const getRandomProduct = () => {
 
 const addProductToCart = (productId, size) => {
     if (!size) {
-        size = 'Undefined'; // Default size if not defined
+        size = 'Undefined';
     }
 
     let positionThisProductInCart = cart.findIndex((value) => value.product_id == productId && value.size == size);
@@ -47,18 +47,14 @@ const updateDetailWithRandomProduct = () => {
         return;
     }
 
-    // Create the anchor element
     const anchor = document.createElement('a');
     anchor.href = `product/index.html?id=${thisProduct.id}`;
 
-    // Create the image element
     const img = document.createElement('img');
     img.src = thisProduct.image;
 
-    // Append the image to the anchor
     anchor.appendChild(img);
 
-    // Replace the existing image with the new anchor-wrapped image
     const mainImageContainer = detail.querySelector('.main-image');
     mainImageContainer.innerHTML = ''; // Clear existing content
     mainImageContainer.appendChild(anchor);
@@ -67,7 +63,6 @@ const updateDetailWithRandomProduct = () => {
     detail.querySelector('.main-price').innerText = '$' + thisProduct.price;
     detail.querySelector('.main-description').innerText = thisProduct.description;
 
-    // Populate size selector
     const sizeSelector = detail.querySelector('.sizeSelector');
     sizeSelector.innerHTML = thisProduct.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
 
