@@ -148,6 +148,14 @@ body.showCart .container, body.showCart header {
     transform: translateX(-250px);
 }
 
+.product-title {
+    font-size: x-large;
+    font-weight: 500;
+    text-align: left;
+    margin-top: 50px;
+    font-style: italic;
+}
+
 .cartTab h1 {
     padding: 20px;
     margin: 0;

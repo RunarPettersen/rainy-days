@@ -154,4 +154,8 @@
     .listProduct {
         grid-template-columns: repeat(1, 1fr);
     }
+
+    .returnCart .item {
+        display: grid;
+        grid-template-columns: 80px 1fr;
 }

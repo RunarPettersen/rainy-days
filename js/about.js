@@ -1,96 +1,27 @@
-let myProductHTML = document.querySelector('.myProduct');
 let listCartHTML = document.querySelector('.listCart');
 let iconCart = document.querySelector('.icon-cart');
 let iconCartSpan = document.querySelector('.icon-cart span');
 let body = document.querySelector('body');
 let closeCart = document.querySelector('.close');
-let productListTitle = document.querySelector('.title');
-let sortPriceSelect = document.querySelector('#sortPrice');
 let products = [];
 let cart = [];
 
-iconCart.addEventListener('click', () => {
-    body.classList.toggle('showCart');
-});
-closeCart.addEventListener('click', () => {
-    body.classList.toggle('showCart');
-});
-
-sortPriceSelect.addEventListener('change', () => {
-    sortProductsByPrice(sortPriceSelect.value);
-    addDataToHTML();
-});
-
-const getProductIdFromURL = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('id');
-};
-
-const sortProductsByPrice = (order) => {
-    products.sort((a, b) => {
-        if (order === 'asc') {
-            return a.price - b.price;
-        } else {
-            return b.price - a.price;
-        }
+// Check if the elements exist before adding event listeners
+if (iconCart) {
+    iconCart.addEventListener('click', () => {
+        body.classList.toggle('showCart');
     });
-};
+} else {
+    console.error('iconCart element not found');
+}
 
-const addDataToHTML = () => {
-    const productId = getProductIdFromURL();
-
-    if (productId) {
-        productListTitle.style.display = 'none';
-        myProductHTML.style.display = 'none';
-
-        const product = products.find(product => product.id == productId);
-        if (product) {
-            let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
-            let productDetail = document.createElement('div');
-            productDetail.classList.add('item');
-            productDetail.innerHTML = `
-                <img src="../${product.image}" alt="">
-                <h2>${product.title}</h2>
-                <div class="description">${product.description}</div>
-                <div class="price">$${product.price}</div>
-                <select class="sizeSelector">${sizesOptions}</select>
-                <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
-            myProductHTML.appendChild(productDetail);
-            myProductHTML.style.display = 'block';
-        }
-    } else {
-        if (products.length > 1) {
-            productListTitle.style.display = 'block';
-            myProductHTML.innerHTML = '';
-            products.forEach(product => {
-                let newProduct = document.createElement('div');
-                newProduct.dataset.id = product.id;
-                newProduct.classList.add('item');
-                let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
-                newProduct.innerHTML = `
-                    <img src="../${product.image}" alt="">
-                    <h2>${product.title}</h2>
-                    <div class="description">${product.description}</div>
-                    <div class="price">$${product.price}</div>
-                    <select class="sizeSelector">${sizesOptions}</select>
-                    <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
-                myProductHTML.appendChild(newProduct);
-            });
-        } else {
-            productListTitle.style.display = 'none';
-            myProductHTML.style.display = 'none';
-        }
-    }
-};
-
-myProductHTML.addEventListener('click', (event) => {
-    let positionClick = event.target;
-    if (positionClick.classList.contains('addCart')) {
-        let id_product = positionClick.dataset.id;
-        let size = positionClick.parentElement.querySelector('.sizeSelector').value;
-        addToCart(id_product, size);
-    }
-});
+if (closeCart) {
+    closeCart.addEventListener('click', () => {
+        body.classList.toggle('showCart');
+    });
+} else {
+    console.error('closeCart element not found');
+}
 
 const addToCart = (product_id, size) => {
     if (!size) {
@@ -115,6 +46,11 @@ const addCartToMemory = () => {
 };
 
 const addCartToHTML = () => {
+    if (!listCartHTML) {
+        console.error('listCartHTML element not found');
+        return;
+    }
+
     listCartHTML.innerHTML = '';
     let totalQuantity = 0;
     let totalPrice = 0;
@@ -156,18 +92,22 @@ const addCartToHTML = () => {
     iconCartSpan.innerText = totalQuantity;
 };
 
-listCartHTML.addEventListener('click', (event) => {
-    let positionClick = event.target;
-    if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
-        let product_id = positionClick.parentElement.parentElement.dataset.id;
-        let size = positionClick.parentElement.parentElement.dataset.size;
-        let type = 'minus';
-        if (positionClick.classList.contains('plus')) {
-            type = 'plus';
+if (listCartHTML) {
+    listCartHTML.addEventListener('click', (event) => {
+        let positionClick = event.target;
+        if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
+            let product_id = positionClick.parentElement.parentElement.dataset.id;
+            let size = positionClick.parentElement.parentElement.dataset.size;
+            let type = 'minus';
+            if (positionClick.classList.contains('plus')) {
+                type = 'plus';
+            }
+            changeQuantityCart(product_id, size, type);
         }
-        changeQuantityCart(product_id, size, type);
-    }
-});
+    });
+} else {
+    console.error('listCartHTML element not found');
+}
 
 const changeQuantityCart = (product_id, size, type) => {
     let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
@@ -196,12 +136,12 @@ const initApp = () => {
         .then(response => response.json())
         .then(data => {
             products = data;
-            sortProductsByPrice(sortPriceSelect.value); // Sort products initially based on default sort order
-            addDataToHTML();
             if (localStorage.getItem('cart')) {
                 cart = JSON.parse(localStorage.getItem('cart'));
                 addCartToHTML();
             }
+        }).catch(error => {
+            console.error('Error fetching products:', error);
         });
 };
 
