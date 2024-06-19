@@ -233,19 +233,39 @@ footer svg {
     margin-bottom: -30px;
 }
 
+.follow-container {
+    width: 900px;
+    max-width: 90vw;
+    margin: auto;
+    text-align: center;
+    display: flex;
+}
+
 .follow {
     background-color: #0a3641;
 }
 
+.about-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.about-info a {
+    color: #fff;
+}
+
 .follow-us {
-    width: 900px;
     max-width: 90vw;
     margin: auto;
+    padding-bottom: 50px;
+}
+
+.follow-us h1 {
+    margin: 0;
 }
 
 .social-media {
     position: relative;
-    bottom: 15px;
 }
 
 .social-media a {
