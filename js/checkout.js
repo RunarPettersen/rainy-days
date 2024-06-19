@@ -64,67 +64,15 @@ const updateDetailWithRandomProduct = () => {
     img.src = `../${thisProduct.image}`;
 
     anchor.appendChild(img);
-
-    /* const mainImageContainer = detail ? detail.querySelector('.main-image') : null;
-    if (mainImageContainer) {
-        mainImageContainer.innerHTML = ''; // Clear existing content
-        mainImageContainer.appendChild(anchor);
-    } else {
-        console.error('mainImageContainer element not found');
-    } */
-
-/*     const mainTitle = detail ? detail.querySelector('.main-title h1') : null;
-    if (mainTitle) {
-        mainTitle.innerText = thisProduct.title;
-    } else {
-        console.error('mainTitle element not found');
-    } */
-
-/*     const mainPrice = detail ? detail.querySelector('.main-price') : null;
-    if (mainPrice) {
-        mainPrice.innerText = '$' + thisProduct.price;
-    } else {
-        console.error('mainPrice element not found');
-    }
-
-    const mainDescription = detail ? detail.querySelector('.main-description') : null;
-    if (mainDescription) {
-        mainDescription.innerText = thisProduct.description;
-    } else {
-        console.error('mainDescription element not found');
-    } */
-
-/*     const sizeSelector = detail ? detail.querySelector('.sizeSelector') : null;
-    if (sizeSelector) {
-        sizeSelector.innerHTML = thisProduct.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
-    } else {
-        console.error('sizeSelector element not found');
-    } */
-
-/*     const addCartButton = detail ? detail.querySelector('.addCart') : null;
-    if (addCartButton) {
-        addCartButton.dataset.id = thisProduct.id;
-
-        const newAddToCartHandler = () => {
-            const selectedSize = sizeSelector ? sizeSelector.value : 'Undefined';
-            addProductToCart(thisProduct.id, selectedSize);
-        };
-
-        if (addCartButton._addToCartHandler) {
-            addCartButton.removeEventListener('click', addCartButton._addToCartHandler);
-        }
-        addCartButton.addEventListener('click', newAddToCartHandler);
-        addCartButton._addToCartHandler = newAddToCartHandler;
-    } else {
-        console.error('addCartButton element not found');
-    } */
 };
 
 const addDataToHTML = () => {
     if (products.length > 0) {
         if (listProductHTML) {
             listProductHTML.innerHTML = '';
-            products.forEach(product => {
+            // Slice the products array to get only the first 8 products
+            const productsToShow = products.slice(0, 8);
+            productsToShow.forEach(product => {
                 let newProduct = document.createElement('div');
                 newProduct.dataset.id = product.id;
                 newProduct.classList.add('item');
@@ -271,6 +219,7 @@ const updateCheckoutPage = () => {
                 <img src="../${info.image}">
                 <div class="info">
                     <div class="name">${info.title}</div>
+                    <div class="size">${item.size}</div>
                     <div class="price">$${info.price} / ${item.quantity} product(s)</div>
                 </div>
                 <div class="quantity">${item.quantity}</div>
