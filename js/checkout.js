@@ -243,7 +243,7 @@ const updateCheckoutPage = () => {
 };
 
 const initApp = () => {
-    fetch('../products.json')
+    fetch('../js/products.json')
         .then(response => response.json())
         .then(data => {
             products = data;
@@ -255,7 +255,7 @@ const initApp = () => {
                 if (storedCart) {
                     cart = JSON.parse(storedCart);
                     addCartToHTML();
-                    updateCheckoutPage(); // Update the checkout page
+                    updateCheckoutPage();
                 }
             } catch (error) {
                 console.error('Error retrieving cart from local storage:', error);

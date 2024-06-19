@@ -294,6 +294,10 @@ footer svg {
     mask-size: 100% 100%;
   }
 
+.terms {
+    text-align: left;
+}
+
 @media screen and (max-width: 992px) {
     .listProduct {
         grid-template-columns: repeat(3, 1fr);
