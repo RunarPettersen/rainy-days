@@ -126,6 +126,15 @@
     cursor: pointer;
 }
 
+.removeItem {
+    background-color: #0a3641;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    height: 25px;
+}
+
 @media screen and (max-width: 992px) {
     .checkoutLayout {
         grid-template-columns: repeat(1, 1fr);
@@ -158,4 +167,5 @@
     .returnCart .item {
         display: grid;
         grid-template-columns: 80px 1fr;
+    }
 }

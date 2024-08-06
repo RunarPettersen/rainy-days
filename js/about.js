@@ -131,18 +131,39 @@ const changeQuantityCart = (product_id, size, type) => {
     addCartToMemory();
 };
 
-const initApp = () => {
-    fetch('../js/products.json')
-        .then(response => response.json())
-        .then(data => {
-            products = data;
-            if (localStorage.getItem('cart')) {
-                cart = JSON.parse(localStorage.getItem('cart'));
-                addCartToHTML();
+window.addEventListener("load", () => {
+    const loader = document.querySelector(".loader");
+
+    if (loader) {
+        loader.classList.add("loader-hidden");
+
+        loader.addEventListener("transitionend", () => {
+            if (loader.parentNode) {
+                loader.parentNode.removeChild(loader);
             }
-        }).catch(error => {
-            console.error('Error fetching products:', error);
         });
+    } else {
+        console.error('Loader element not found');
+    }
+});
+
+const initApp = async () => {
+    try {
+        const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
+        const data = await response.json();
+        products = data;
+        console.log('Products fetched:', products);
+        addDataToHTML();
+        updateDetailWithRandomProduct();
+
+        const storedCart = localStorage.getItem('cart');
+        if (storedCart) {
+            cart = JSON.parse(storedCart);
+            addCartToHTML();
+        }
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
 };
 
-initApp();
+document.addEventListener('DOMContentLoaded', initApp);

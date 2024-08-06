@@ -8,12 +8,22 @@ let detail = document.querySelector('.main-heading');
 let products = [];
 let cart = [];
 
-iconCart.addEventListener('click', () => {
-    body.classList.toggle('showCart');
-});
-closeCart.addEventListener('click', () => {
-    body.classList.toggle('showCart');
-});
+// Ensure elements exist before adding event listeners
+if (iconCart) {
+    iconCart.addEventListener('click', () => {
+        body.classList.toggle('showCart');
+    });
+} else {
+    console.error('iconCart element not found');
+}
+
+if (closeCart) {
+    closeCart.addEventListener('click', () => {
+        body.classList.toggle('showCart');
+    });
+} else {
+    console.error('closeCart element not found');
+}
 
 const getRandomProduct = () => {
     const randomIndex = Math.floor(Math.random() * products.length);
@@ -21,6 +31,7 @@ const getRandomProduct = () => {
 };
 
 const addProductToCart = (productId, size) => {
+    console.log(`Adding product to cart: ${productId}, size: ${size}`);
     if (!size) {
         size = 'Undefined';
     }
@@ -35,12 +46,14 @@ const addProductToCart = (productId, size) => {
     } else {
         cart[positionThisProductInCart].quantity += 1;
     }
+    console.log('Cart after adding product:', cart);
     addCartToHTML();
     addCartToMemory();
 };
 
 const updateDetailWithRandomProduct = () => {
     const thisProduct = getRandomProduct();
+    console.log('Updating detail with random product:', thisProduct);
 
     if (!thisProduct || !thisProduct.image) {
         console.error('Invalid product returned by getRandomProduct:', thisProduct);
@@ -56,11 +69,11 @@ const updateDetailWithRandomProduct = () => {
     anchor.appendChild(img);
 
     const mainImageContainer = detail.querySelector('.main-image');
-    mainImageContainer.innerHTML = ''; // Clear existing content
+    mainImageContainer.innerHTML = '';
     mainImageContainer.appendChild(anchor);
 
     detail.querySelector('.main-title h1').innerText = thisProduct.title;
-    detail.querySelector('.main-price').innerText = '$' + thisProduct.price;
+    detail.querySelector('.main-price').innerText = '$' + thisProduct.price.toFixed(2);
     detail.querySelector('.main-description').innerText = thisProduct.description;
 
     const sizeSelector = detail.querySelector('.sizeSelector');
@@ -82,6 +95,7 @@ const updateDetailWithRandomProduct = () => {
 };
 
 const addDataToHTML = () => {
+    console.log('Adding data to HTML');
     if (products.length > 0) {
         listProductHTML.innerHTML = '';
         products.forEach(product => {
@@ -90,30 +104,38 @@ const addDataToHTML = () => {
             newProduct.classList.add('item');
             let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
             newProduct.innerHTML =
-                `<a href="product/index.html?id=${product.id}"><img src="${product.image}" alt=""></a>
+                `<a href="product/index.html?id=${product.id}"><img src="${product.image}" alt="${product.title}"></a>
                 <h2>${product.title}</h2>
                 <div class="price">$${product.price}</div>
                 <select class="sizeSelector">${sizesOptions}</select>
                 <button class="addCart">Add To Cart</button>`;
             listProductHTML.appendChild(newProduct);
         });
+    } else {
+        console.error('No products available');
     }
 };
 
-listProductHTML.addEventListener('click', (event) => {
-    let positionClick = event.target;
-    if (positionClick.classList.contains('addCart')) {
-        let id_product = positionClick.parentElement.dataset.id;
-        let size = positionClick.parentElement.querySelector('.sizeSelector').value;
-        addProductToCart(id_product, size);
-    }
-});
+if (listProductHTML) {
+    listProductHTML.addEventListener('click', (event) => {
+        let positionClick = event.target;
+        if (positionClick.classList.contains('addCart')) {
+            let id_product = positionClick.parentElement.dataset.id;
+            let size = positionClick.parentElement.querySelector('.sizeSelector').value;
+            addProductToCart(id_product, size);
+        }
+    });
+} else {
+    console.error('listProductHTML element not found');
+}
 
 const addCartToMemory = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
+    console.log('Cart saved to local storage:', localStorage.getItem('cart'));
 };
 
 const addCartToHTML = () => {
+    console.log('Updating cart HTML');
     listCartHTML.innerHTML = '';
     let totalQuantity = 0;
     let totalPrice = 0;
@@ -125,7 +147,15 @@ const addCartToHTML = () => {
             newItem.dataset.id = item.product_id;
             newItem.dataset.size = item.size;
             let positionProduct = products.findIndex((value) => value.id == item.product_id);
+            if (positionProduct === -1) {
+                console.error('Product not found for cart item:', item);
+                return;
+            }
             let info = products[positionProduct];
+            if (!info || !info.image) {
+                console.error('Invalid product info for cart item:', info);
+                return;
+            }
             listCartHTML.appendChild(newItem);
             newItem.innerHTML = `
             <div class="image">
@@ -137,7 +167,7 @@ const addCartToHTML = () => {
             <div class="size">
                 Size: ${item.size}
             </div>
-            <div class="totalPrice">$${info.price * item.quantity}</div>
+            <div class="totalPrice">$${(info.price * item.quantity).toFixed(2)}</div>
             <div class="quantity">
                 <span class="minus"><</span>
                 <span>${item.quantity}</span>
@@ -153,22 +183,28 @@ const addCartToHTML = () => {
         listCartHTML.appendChild(totalDiv);
     }
     iconCartSpan.innerText = totalQuantity;
+    console.log('Cart HTML updated. Total quantity:', totalQuantity);
 };
 
-listCartHTML.addEventListener('click', (event) => {
-    let positionClick = event.target;
-    if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
-        let product_id = positionClick.parentElement.parentElement.dataset.id;
-        let size = positionClick.parentElement.parentElement.dataset.size;
-        let type = 'minus';
-        if (positionClick.classList.contains('plus')) {
-            type = 'plus';
+if (listCartHTML) {
+    listCartHTML.addEventListener('click', (event) => {
+        let positionClick = event.target;
+        if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
+            let product_id = positionClick.parentElement.parentElement.dataset.id;
+            let size = positionClick.parentElement.parentElement.dataset.size;
+            let type = 'minus';
+            if (positionClick.classList.contains('plus')) {
+                type = 'plus';
+            }
+            changeQuantityCart(product_id, size, type);
         }
-        changeQuantityCart(product_id, size, type);
-    }
-});
+    });
+} else {
+    console.error('listCartHTML element not found');
+}
 
 const changeQuantityCart = (product_id, size, type) => {
+    console.log(`Changing quantity of product in cart: ${product_id}, size: ${size}, type: ${type}`);
     let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
     if (positionItemInCart >= 0) {
         let info = cart[positionItemInCart];
@@ -186,21 +222,44 @@ const changeQuantityCart = (product_id, size, type) => {
                 break;
         }
     }
+    console.log('Cart after changing quantity:', cart);
     addCartToHTML();
     addCartToMemory();
 };
 
-const initApp = () => {
-    fetch('js/products.json')
-        .then(response => response.json())
-        .then(data => {
-            products = data;
-            addDataToHTML();
-            updateDetailWithRandomProduct();
-            if (localStorage.getItem('cart')) {
-                cart = JSON.parse(localStorage.getItem('cart'));
-                addCartToHTML();
+window.addEventListener("load", () => {
+    const loader = document.querySelector(".loader");
+
+    if (loader) {
+        loader.classList.add("loader-hidden");
+
+        loader.addEventListener("transitionend", () => {
+            if (loader.parentNode) {
+                loader.parentNode.removeChild(loader);
             }
         });
+    } else {
+        console.error('Loader element not found');
+    }
+});
+
+const initApp = async () => {
+    try {
+        const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
+        const data = await response.json();
+        products = data;
+        console.log('Products fetched:', products);
+        addDataToHTML();
+        updateDetailWithRandomProduct();
+
+        const storedCart = localStorage.getItem('cart');
+        if (storedCart) {
+            cart = JSON.parse(storedCart);
+            addCartToHTML();
+        }
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
 };
-initApp();
+
+document.addEventListener('DOMContentLoaded', initApp);

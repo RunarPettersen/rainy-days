@@ -61,7 +61,7 @@ const updateDetailWithRandomProduct = () => {
     anchor.href = `product/index.html?id=${thisProduct.id}`;
 
     const img = document.createElement('img');
-    img.src = `../${thisProduct.image}`;
+    img.src = `${thisProduct.image}`;
 
     anchor.appendChild(img);
 };
@@ -78,7 +78,7 @@ const addDataToHTML = () => {
                 newProduct.classList.add('item');
                 let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
                 newProduct.innerHTML =
-                    `<a href="product/index.html?id=${product.id}"><img src="../${product.image}" alt=""></a>
+                    `<a href="../product/index.html?id=${product.id}"><img src="${product.image}" alt="${product.title}"></a>
                     <h2>${product.title}</h2>
                     <div class="price">$${product.price}</div>
                     <select class="sizeSelector">${sizesOptions}</select>
@@ -130,7 +130,7 @@ const addCartToHTML = () => {
                 listCartHTML.appendChild(newItem);
                 newItem.innerHTML = `
                 <div class="image">
-                    <img src="../${info.image}">
+                    <img src="${info.image}" alt="${info.title}">
                 </div>
                 <div class="title">
                     ${info.title}
@@ -171,6 +171,10 @@ if (listCartHTML) {
                 type = 'plus';
             }
             changeQuantityCart(product_id, size, type);
+        } else if (positionClick.classList.contains('removeItem')) {
+            let product_id = positionClick.parentElement.dataset.id;
+            let size = positionClick.parentElement.dataset.size;
+            removeFromCart(product_id, size);
         }
     });
 } else {
@@ -200,6 +204,17 @@ const changeQuantityCart = (product_id, size, type) => {
     console.log('Cart after quantity change:', cart);
 };
 
+const removeFromCart = (product_id, size) => {
+    let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
+    if (positionItemInCart >= 0) {
+        cart.splice(positionItemInCart, 1);
+    }
+    addCartToHTML();
+    addCartToMemory();
+    updateCheckoutPage();
+    console.log('Cart after removing product:', cart);
+};
+
 const updateCheckoutPage = () => {
     if (checkoutList) {
         checkoutList.innerHTML = '';
@@ -216,14 +231,17 @@ const updateCheckoutPage = () => {
                 let info = products[positionProduct];
                 checkoutList.appendChild(newItem);
                 newItem.innerHTML = `
-                <img src="../${info.image}">
+                <img src="${info.image}" alt="${info.title}">
                 <div class="info">
                     <div class="name">${info.title}</div>
                     <div class="size">${item.size}</div>
                     <div class="price">$${info.price} / ${item.quantity} product(s)</div>
                 </div>
                 <div class="quantity">${item.quantity}</div>
-                <div class="returnPrice">$${(info.price * item.quantity).toFixed(2)}</div>`;
+                <div class="sidepanel">
+                    <div class="returnPrice">$${(info.price * item.quantity).toFixed(2)}</div>
+                    <button class="removeItem">Remove</button>
+                </div>`;
                 totalPrice += info.price * item.quantity;
             });
         }
@@ -242,27 +260,68 @@ const updateCheckoutPage = () => {
     }
 };
 
-const initApp = () => {
-    fetch('../js/products.json')
-        .then(response => response.json())
-        .then(data => {
-            products = data;
-            addDataToHTML();
-            updateDetailWithRandomProduct();
-            try {
-                const storedCart = localStorage.getItem('cart');
-                console.log('Stored cart from local storage:', storedCart);
-                if (storedCart) {
-                    cart = JSON.parse(storedCart);
-                    addCartToHTML();
-                    updateCheckoutPage();
-                }
-            } catch (error) {
-                console.error('Error retrieving cart from local storage:', error);
+// Event listener for remove buttons on the checkout page
+if (checkoutList) {
+    checkoutList.addEventListener('click', (event) => {
+        let positionClick = event.target;
+        if (positionClick.classList.contains('removeItem')) {
+            let product_id = positionClick.closest('.item').dataset.id;
+            let size = positionClick.closest('.item').dataset.size;
+            removeFromCart(product_id, size);
+        }
+    });
+} else {
+    console.error('checkoutList element not found');
+}
+
+// Event listener for remove buttons on the checkout page
+if (checkoutList) {
+    checkoutList.addEventListener('click', (event) => {
+        let positionClick = event.target;
+        if (positionClick.classList.contains('removeItem')) {
+            let product_id = positionClick.parentElement.dataset.id;
+            let size = positionClick.parentElement.dataset.size;
+            removeFromCart(product_id, size);
+        }
+    });
+} else {
+    console.error('checkoutList element not found');
+}
+
+window.addEventListener("load", () => {
+    const loader = document.querySelector(".loader");
+
+    if (loader) {
+        loader.classList.add("loader-hidden");
+
+        loader.addEventListener("transitionend", () => {
+            if (loader.parentNode) {
+                loader.parentNode.removeChild(loader);
             }
-        }).catch(error => {
-            console.error('Error fetching products:', error);
         });
+    } else {
+        console.error('Loader element not found');
+    }
+});
+
+const initApp = async () => {
+    try {
+        const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
+        const data = await response.json();
+        products = data;
+        addDataToHTML();
+        updateDetailWithRandomProduct();
+
+        const storedCart = localStorage.getItem('cart');
+        console.log('Stored cart from local storage:', storedCart);
+        if (storedCart) {
+            cart = JSON.parse(storedCart);
+            addCartToHTML();
+            updateCheckoutPage();
+        }
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
 };
 
 document.addEventListener('DOMContentLoaded', initApp);

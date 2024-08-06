@@ -76,8 +76,10 @@ header .icon-cart span {
 
 .main-image img {
     width: 350px;
+    height: 350px;
     border-radius: 50%;
     border: 10px solid #0a3641;
+    object-fit: cover;
 }
 
 .main-title h1 {
@@ -87,7 +89,7 @@ header .icon-cart span {
 }
 
 .main-info button {
-    background-color: #666;
+    background-color: #0a3641;
     color: #fff;
     padding: 5px 10px;
     border-radius: 20px;
@@ -100,6 +102,8 @@ header .icon-cart span {
     width: 90%;
     filter: drop-shadow(0 20px 20px #000);
     border-radius: 20px;
+    height: 50%;
+    object-fit: cover;
 }
 
 .listProduct {
@@ -119,7 +123,7 @@ header .icon-cart span {
 }
 
 .listProduct .item button {
-    background-color: #666;
+    background-color: #0a3641;
     color: #fff;
     padding: 5px 10px;
     border-radius: 20px;
@@ -326,6 +330,49 @@ footer svg {
     text-align: left;
 }
 
+.about-image img {
+    width: 400px;
+    border-radius: 50%;
+    float: right;
+}
+
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightblue;
+    transition: opacity 0.75s, visibility 0.75s;
+}
+
+.loader-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader::after {
+    content: "";
+    width: 75px;
+    height: 75px;
+    border: 15px solid #0a3641;
+    border-top-color: #477286;
+    border-radius: 50%;
+    animation: loading 0.75s ease infinite;
+}
+
+@keyframes loading {
+    from {
+        transform: rotate(0turn);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
+
 @media screen and (max-width: 992px) {
     .listProduct {
         grid-template-columns: repeat(3, 1fr);
@@ -344,11 +391,25 @@ footer svg {
     .listProduct {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .about-image img {
+        width: 300px;
+    }
 }
 
 @media screen and (max-width: 650px) {
     .heading-container {
         flex-direction: column;
+    }
+
+    .about-image img {
+        width: 80vw;
+        float: unset;
+    }
+
+    .about-image {
+        display: flex;
+        justify-content: center;
     }
 }
 
