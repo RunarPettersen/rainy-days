@@ -7,33 +7,30 @@ let closeCart = document.querySelector('.close');
 let productListTitle = document.querySelector('.title');
 let sortPriceSelect = document.querySelector('#sortPrice');
 let sortPriceTitle = document.querySelector('.sorting-controls');
+let genderControls = document.querySelector('.gender-controls');
+let genderFilterSelect = document.querySelector('#genderFilter'); // Added for gender filter
 let products = [];
 let cart = [];
 
-if (iconCart) {
-    iconCart.addEventListener('click', () => {
-        body.classList.toggle('showCart');
-    });
-} else {
-    console.error('iconCart element not found');
-}
+// Event listeners for cart toggling
+iconCart.addEventListener('click', () => {
+    body.classList.toggle('showCart');
+});
 
-if (closeCart) {
-    closeCart.addEventListener('click', () => {
-        body.classList.toggle('showCart');
-    });
-} else {
-    console.error('closeCart element not found');
-}
+closeCart.addEventListener('click', () => {
+    body.classList.toggle('showCart');
+});
 
-if (sortPriceSelect) {
-    sortPriceSelect.addEventListener('change', () => {
-        sortProductsByPrice(sortPriceSelect.value);
-        addDataToHTML();
-    });
-} else {
-    console.error('sortPriceSelect element not found');
-}
+// Event listener for sorting by price
+sortPriceSelect.addEventListener('change', () => {
+    sortProductsByPrice(sortPriceSelect.value);
+    addDataToHTML();
+});
+
+// Event listener for filtering by gender
+genderFilterSelect.addEventListener('change', () => {
+    addDataToHTML();
+});
 
 const getProductIdFromURL = () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -52,12 +49,15 @@ const sortProductsByPrice = (order) => {
 
 const addDataToHTML = () => {
     const productId = getProductIdFromURL();
+    const selectedGender = genderFilterSelect.value;
 
     if (productId) {
         productListTitle.style.display = 'none';
         myProductHTML.style.display = 'none';
         sortPriceSelect.style.display = 'none';
         sortPriceTitle.style.display = 'none';
+        genderFilterSelect.style.display = 'none';
+        genderControls.style.display = 'none';
 
         const product = products.find(product => product.id == productId);
         if (product) {
@@ -77,12 +77,17 @@ const addDataToHTML = () => {
             myProductHTML.style.display = 'block';
         }
     } else {
-        if (products.length > 1) {
+        let filteredProducts = products;
+        if (selectedGender !== 'all') {
+            filteredProducts = products.filter(product => product.gender.toLowerCase() === selectedGender);
+        }
+
+        if (filteredProducts.length > 1) {
             productListTitle.style.display = 'block';
             myProductHTML.innerHTML = '';
             sortPriceSelect.style.display = 'block'; // Show price sorter
 
-            products.forEach(product => {
+            filteredProducts.forEach(product => {
                 let newProduct = document.createElement('div');
                 newProduct.dataset.id = product.id;
                 newProduct.classList.add('item');
@@ -104,18 +109,14 @@ const addDataToHTML = () => {
     }
 };
 
-if (myProductHTML) {
-    myProductHTML.addEventListener('click', (event) => {
-        let positionClick = event.target;
-        if (positionClick.classList.contains('addCart')) {
-            let id_product = positionClick.dataset.id;
-            let size = positionClick.parentElement.querySelector('.sizeSelector').value;
-            addToCart(id_product, size);
-        }
-    });
-} else {
-    console.error('myProductHTML element not found');
-}
+myProductHTML.addEventListener('click', (event) => {
+    let positionClick = event.target;
+    if (positionClick.classList.contains('addCart')) {
+        let id_product = positionClick.dataset.id;
+        let size = positionClick.parentElement.querySelector('.sizeSelector').value;
+        addToCart(id_product, size);
+    }
+});
 
 const addToCart = (product_id, size) => {
     if (!size) {
@@ -181,22 +182,18 @@ const addCartToHTML = () => {
     iconCartSpan.innerText = totalQuantity;
 };
 
-if (listCartHTML) {
-    listCartHTML.addEventListener('click', (event) => {
-        let positionClick = event.target;
-        if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
-            let product_id = positionClick.parentElement.parentElement.dataset.id;
-            let size = positionClick.parentElement.parentElement.dataset.size;
-            let type = 'minus';
-            if (positionClick.classList.contains('plus')) {
-                type = 'plus';
-            }
-            changeQuantityCart(product_id, size, type);
+listCartHTML.addEventListener('click', (event) => {
+    let positionClick = event.target;
+    if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
+        let product_id = positionClick.parentElement.parentElement.dataset.id;
+        let size = positionClick.parentElement.parentElement.dataset.size;
+        let type = 'minus';
+        if (positionClick.classList.contains('plus')) {
+            type = 'plus';
         }
-    });
-} else {
-    console.error('listCartHTML element not found');
-}
+        changeQuantityCart(product_id, size, type);
+    }
+});
 
 const changeQuantityCart = (product_id, size, type) => {
     let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);

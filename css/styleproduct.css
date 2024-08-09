@@ -36,10 +36,21 @@
     font-size: larger;
 }
 
+.sorting {
+    display: flex;
+    justify-content: space-between;
+}
+
 .sorting-controls {
     display: flex;
     justify-content: space-evenly;
-    align-items: flex-end;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.gender-controls {
+    display: flex;
+    justify-content: space-evenly;
     flex-direction: column;
     margin-bottom: 10px;
 }

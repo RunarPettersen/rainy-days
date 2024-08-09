@@ -29,12 +29,22 @@
 
 <div class="container">
     <div class="title">PRODUCT LIST</div>
-    <div class="sorting-controls">
-        <label for="sortPrice">Sort by price:</label>
-        <select id="sortPrice">
-            <option value="asc">Low to High</option>
-            <option value="desc">High to Low</option>
-        </select>
+    <div class="sorting">
+        <div class="gender-controls">
+            <label for="genderFilter">Sort by gender:</label>
+            <select id="genderFilter">
+                <option value="all">All</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+            </select>
+        </div>
+        <div class="sorting-controls">
+            <label for="sortPrice">Sort by price:</label>
+            <select id="sortPrice">
+                <option value="asc">Low to High</option>
+                <option value="desc">High to Low</option>
+            </select>
+        </div>
     </div>
     
     <div class="myProduct">     
@@ -47,7 +57,7 @@
     </div>
     <div class="btn">
         <button class="close">CLOSE</button>
-        <button class="checkOut"><a href="../checkout/">CHECK OUT</a></button>
+        <button class="checkOut"><a href="../checkout/">CHECKOUT</a></button>
     </div>
 </div>
 

@@ -270,10 +270,13 @@ footer svg {
     max-width: 90vw;
     margin: auto;
     padding-bottom: 50px;
+    margin-top: 0;
 }
 
-.follow-us h1 {
+.follow-us h2 {
     margin: 0;
+    font-weight: bold;
+    font-size: 2rem;
 }
 
 .social-media {
@@ -334,6 +337,16 @@ footer svg {
     width: 400px;
     border-radius: 50%;
     float: right;
+}
+
+.rainylogo {
+    margin: auto;
+    margin-top: 15px;
+}
+
+.rainylogo img {
+    width: 200px;
+    margin: auto;
 }
 
 .loader {
@@ -411,6 +424,10 @@ footer svg {
         display: flex;
         justify-content: center;
     }
+
+    .rainylogo {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 450px) {
@@ -420,6 +437,7 @@ footer svg {
 
     .main-image img {
         width: 300px;
+        height: 300px;
     }
 
     .cartTab {
