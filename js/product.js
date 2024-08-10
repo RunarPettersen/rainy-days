@@ -141,9 +141,11 @@ const addCartToMemory = () => {
 };
 
 const addCartToHTML = () => {
+    console.log('Updating cart HTML');
     listCartHTML.innerHTML = '';
     let totalQuantity = 0;
     let totalPrice = 0;
+
     if (cart.length > 0) {
         cart.forEach(item => {
             totalQuantity += item.quantity;
@@ -152,11 +154,19 @@ const addCartToHTML = () => {
             newItem.dataset.id = item.product_id;
             newItem.dataset.size = item.size;
             let positionProduct = products.findIndex((value) => value.id == item.product_id);
+            if (positionProduct === -1) {
+                console.error('Product not found for cart item:', item);
+                return;
+            }
             let info = products[positionProduct];
+            if (!info || !info.image) {
+                console.error('Invalid product info for cart item:', info);
+                return;
+            }
             listCartHTML.appendChild(newItem);
             newItem.innerHTML = `
             <div class="image">
-                <img src="${info.image}">
+                <img src="${info.image}" alt="${info.title}">
             </div>
             <div class="title">
                 ${info.title}
@@ -178,8 +188,16 @@ const addCartToHTML = () => {
         totalDiv.innerHTML = `
         <h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
         listCartHTML.appendChild(totalDiv);
+    } else {
+        // If the cart is empty, display "Cart is empty" message
+        let emptyMessage = document.createElement('div');
+        emptyMessage.classList.add('empty-cart-message');
+        emptyMessage.innerText = 'Cart is empty';
+        listCartHTML.appendChild(emptyMessage);
     }
+    
     iconCartSpan.innerText = totalQuantity;
+    console.log('Cart HTML updated. Total quantity:', totalQuantity);
 };
 
 listCartHTML.addEventListener('click', (event) => {

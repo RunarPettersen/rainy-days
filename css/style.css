@@ -166,6 +166,12 @@ body.showCart .container, body.showCart header {
     font-weight: 500;
 }
 
+.empty-cart-message {
+    padding: 20px;
+    margin: 0;
+    font-weight: 500;
+}
+
 .cartTab .btn {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

@@ -114,51 +114,65 @@ const addCartToMemory = () => {
 };
 
 const addCartToHTML = () => {
-    if (listCartHTML) {
-        listCartHTML.innerHTML = '';
-        let totalQuantity = 0;
-        let totalPrice = 0;
-        if (cart.length > 0) {
-            cart.forEach(item => {
-                totalQuantity += item.quantity;
-                let newItem = document.createElement('div');
-                newItem.classList.add('item');
-                newItem.dataset.id = item.product_id;
-                newItem.dataset.size = item.size;
-                let positionProduct = products.findIndex((value) => value.id == item.product_id);
-                let info = products[positionProduct];
-                listCartHTML.appendChild(newItem);
-                newItem.innerHTML = `
-                <div class="image">
-                    <img src="${info.image}" alt="${info.title}">
-                </div>
-                <div class="title">
-                    ${info.title}
-                </div>
-                <div class="size">
-                    Size: ${item.size}
-                </div>
-                <div class="totalPrice">$${info.price * item.quantity}</div>
-                <div class="quantity">
-                    <span class="minus"><</span>
-                    <span>${item.quantity}</span>
-                    <span class="plus">></span>
-                </div>`;
-                totalPrice += info.price * item.quantity;
-            });
+    console.log('Updating cart HTML');
+    listCartHTML.innerHTML = '';
+    let totalQuantity = 0;
+    let totalPrice = 0;
 
-            let totalDiv = document.createElement('div');
-            totalDiv.classList.add('total');
-            totalDiv.innerHTML = `
-            <h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
-            listCartHTML.appendChild(totalDiv);
-        }
-        iconCartSpan.innerText = totalQuantity;
-        console.log('Updated cart HTML. Total quantity:', totalQuantity);
+    if (cart.length > 0) {
+        cart.forEach(item => {
+            totalQuantity += item.quantity;
+            let newItem = document.createElement('div');
+            newItem.classList.add('item');
+            newItem.dataset.id = item.product_id;
+            newItem.dataset.size = item.size;
+            let positionProduct = products.findIndex((value) => value.id == item.product_id);
+            if (positionProduct === -1) {
+                console.error('Product not found for cart item:', item);
+                return;
+            }
+            let info = products[positionProduct];
+            if (!info || !info.image) {
+                console.error('Invalid product info for cart item:', info);
+                return;
+            }
+            listCartHTML.appendChild(newItem);
+            newItem.innerHTML = `
+            <div class="image">
+                <img src="${info.image}" alt="${info.title}">
+            </div>
+            <div class="title">
+                ${info.title}
+            </div>
+            <div class="size">
+                Size: ${item.size}
+            </div>
+            <div class="totalPrice">$${(info.price * item.quantity).toFixed(2)}</div>
+            <div class="quantity">
+                <span class="minus"><</span>
+                <span>${item.quantity}</span>
+                <span class="plus">></span>
+            </div>`;
+            totalPrice += info.price * item.quantity;
+        });
+
+        let totalDiv = document.createElement('div');
+        totalDiv.classList.add('total');
+        totalDiv.innerHTML = `
+        <h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
+        listCartHTML.appendChild(totalDiv);
     } else {
-        console.error('listCartHTML element not found');
+        // If the cart is empty, display "Cart is empty" message
+        let emptyMessage = document.createElement('div');
+        emptyMessage.classList.add('empty-cart-message');
+        emptyMessage.innerText = 'Cart is empty';
+        listCartHTML.appendChild(emptyMessage);
     }
+    
+    iconCartSpan.innerText = totalQuantity;
+    console.log('Cart HTML updated. Total quantity:', totalQuantity);
 };
+
 
 if (listCartHTML) {
     listCartHTML.addEventListener('click', (event) => {
@@ -244,7 +258,14 @@ const updateCheckoutPage = () => {
                 </div>`;
                 totalPrice += info.price * item.quantity;
             });
+        } else {
+
+            let emptyMessage = document.createElement('div');
+            emptyMessage.classList.add('empty-cart-message');
+            emptyMessage.innerText = 'No items in cart';
+            checkoutList.appendChild(emptyMessage);
         }
+
         if (checkoutTotalQuantity) {
             checkoutTotalQuantity.innerText = totalQuantity;
         } else {
@@ -259,6 +280,30 @@ const updateCheckoutPage = () => {
         console.error('checkoutList element not found');
     }
 };
+
+document.getElementById('placeOrder').addEventListener('click', () => {
+    if (cart.length === 0) {
+        alert('Your cart is empty. Please add items to your cart before placing an order.');
+        return; // Stop the function if the cart is empty
+    }
+    // Save the current cart as a receipt
+    const receipt = cart.map(item => {
+        const product = products.find(p => p.id === item.product_id);
+        return {
+            product_id: item.product_id,
+            size: item.size,
+            quantity: item.quantity,
+            title: product.title,
+            image: product.image,
+            price: product.price
+        };
+    });
+    localStorage.setItem('receipt', JSON.stringify(receipt));
+
+    // Clear the cart
+    localStorage.removeItem('cart');
+    window.location.href = 'confirmation/index.html';
+});
 
 // Event listener for remove buttons on the checkout page
 if (checkoutList) {
@@ -287,6 +332,15 @@ if (checkoutList) {
 } else {
     console.error('checkoutList element not found');
 }
+
+const saveCartAsReceipt = () => {
+    localStorage.setItem('receipt', JSON.stringify(cart)); // Save the cart as a receipt
+    localStorage.removeItem('cart'); // Clear the cart from local storage
+    cart = []; // Clear the cart in memory
+    addCartToHTML(); // Update the cart display
+    updateCheckoutPage(); // Update the checkout page
+    console.log('Cart saved as receipt and cleared.');
+};
 
 window.addEventListener("load", () => {
     const loader = document.querySelector(".loader");

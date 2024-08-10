@@ -127,6 +127,58 @@
     cursor: pointer;
 }
 
+.checkoutConfirmation {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.checkoutThanks h1 {
+    margin-top: 0;
+}
+
+.checkoutThanks a {
+    color: #000;
+    font-weight: 700;
+}
+
+.container a {
+    color: #000;
+    font-weight: 700;
+}
+
+.receipt {
+    width: 900px;
+    max-width: 90vw;
+    margin: auto;
+    text-align: center;
+    padding-top: 10px;
+    transition: transform .5s;
+}
+
+.receipt-list img {
+    height: 80px;
+    border-radius: 50%;
+}
+
+.receipt-list .item {
+    display: grid;
+    grid-template-columns: 80px 1fr 20px 100px;
+    align-items: center;
+    gap: 20px;
+    padding: 5px 20px;
+}
+
+.receipt-list .item .name,
+.receipt-list .item {
+    font-size: large;
+    font-weight: bold;
+}
+
+.receipt-list .info {
+    display: flex;
+}
+
 @media screen and (max-width: 992px) {
     .checkoutLayout {
         grid-template-columns: repeat(1, 1fr);

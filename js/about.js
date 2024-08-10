@@ -1,8 +1,10 @@
+let listProductHTML = document.querySelector('.listProduct');
 let listCartHTML = document.querySelector('.listCart');
 let iconCart = document.querySelector('.icon-cart');
 let iconCartSpan = document.querySelector('.icon-cart span');
 let body = document.querySelector('body');
 let closeCart = document.querySelector('.close');
+let detail = document.querySelector('.main-heading');
 let products = [];
 let cart = [];
 
@@ -46,14 +48,11 @@ const addCartToMemory = () => {
 };
 
 const addCartToHTML = () => {
-    if (!listCartHTML) {
-        console.error('listCartHTML element not found');
-        return;
-    }
-
+    console.log('Updating cart HTML');
     listCartHTML.innerHTML = '';
     let totalQuantity = 0;
     let totalPrice = 0;
+
     if (cart.length > 0) {
         cart.forEach(item => {
             totalQuantity += item.quantity;
@@ -62,11 +61,19 @@ const addCartToHTML = () => {
             newItem.dataset.id = item.product_id;
             newItem.dataset.size = item.size;
             let positionProduct = products.findIndex((value) => value.id == item.product_id);
+            if (positionProduct === -1) {
+                console.error('Product not found for cart item:', item);
+                return;
+            }
             let info = products[positionProduct];
+            if (!info || !info.image) {
+                console.error('Invalid product info for cart item:', info);
+                return;
+            }
             listCartHTML.appendChild(newItem);
             newItem.innerHTML = `
             <div class="image">
-                <img src="../${info.image}">
+                <img src="${info.image}" alt="${info.title}">
             </div>
             <div class="title">
                 ${info.title}
@@ -74,7 +81,7 @@ const addCartToHTML = () => {
             <div class="size">
                 Size: ${item.size}
             </div>
-            <div class="totalPrice">$${info.price * item.quantity}</div>
+            <div class="totalPrice">$${(info.price * item.quantity).toFixed(2)}</div>
             <div class="quantity">
                 <span class="minus"><</span>
                 <span>${item.quantity}</span>
@@ -88,8 +95,16 @@ const addCartToHTML = () => {
         totalDiv.innerHTML = `
         <h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
         listCartHTML.appendChild(totalDiv);
+    } else {
+        // If the cart is empty, display "Cart is empty" message
+        let emptyMessage = document.createElement('div');
+        emptyMessage.classList.add('empty-cart-message');
+        emptyMessage.innerText = 'Cart is empty';
+        listCartHTML.appendChild(emptyMessage);
     }
+    
     iconCartSpan.innerText = totalQuantity;
+    console.log('Cart HTML updated. Total quantity:', totalQuantity);
 };
 
 if (listCartHTML) {
@@ -153,8 +168,6 @@ const initApp = async () => {
         const data = await response.json();
         products = data;
         console.log('Products fetched:', products);
-        addDataToHTML();
-        updateDetailWithRandomProduct();
 
         const storedCart = localStorage.getItem('cart');
         if (storedCart) {

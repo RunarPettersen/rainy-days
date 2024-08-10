@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Rainy Days product list">
-    <title>Rainy Days - Products</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/styleproduct.css">
+    <meta name="description" content="Rainy Days – Thank you for buying!">
+    <title>Rainy Days - Checkout</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/stylecheckout.css">
 </head>
 <body class="">
-
+    
 <header>
-    <div class="logo"><a href="../index.html"><img src="../image/rainydayslogo02.png"></a></div>
+    <div class="logo"><a href="../../index.html"><img src="../../image/rainydayslogo02.png" alt="Rainy Days Logo"></a></div>
     <div class="menu">
         <div class="menu-line">
-            <div><a href="../index.html">Home</a></div>
-            <div><a href="index.html">Products</a></div>
-            <div><a href="../about/index.html">About</a></div>
+            <div><a href="../../index.html">Home</a></div>
+            <div><a href="../../product/index.html">Products</a></div>
+            <div><a href="../../about/index.html">About</a></div>
         </div>
         <div class="icon-cart">
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -27,38 +27,40 @@
     </div>
 </header>
 
-<div class="container">
-    <div class="title">PRODUCT LIST</div>
-    <div class="sorting">
-        <div class="gender-controls">
-            <label for="genderFilter">Sort by gender:</label>
-            <select id="genderFilter">
-                <option value="all">All</option>
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-            </select>
-        </div>
-        <div class="sorting-controls">
-            <label for="sortPrice">Sort by price:</label>
-            <select id="sortPrice">
-                <option value="asc">Low to High</option>
-                <option value="desc">High to Low</option>
-            </select>
-        </div>
-    </div>
-    
-    <div class="myProduct">     
+<div class="cartTab">
+    <h1>Shopping Cart</h1>
+    <div class="listCart"></div>
+    <div class="btn">
+        <button class="close">CLOSE</button>
+        <button class="checkOut"><a href="../index.html">CHECKOUT</a></button>
     </div>
 </div>
 
-<div class="cartTab">
-    <h1>Shopping Cart</h1>
-    <div class="listCart">          
+<div class="container">
+    <div class="checkoutConfirmation">
+        <div class="checkoutThanks">   
+            <h1>THANK YOU FOR YOUR PURCHASE!</h1>
+            <p class="order-number"></p>
+            <p>We have recieved the payment for your order and are getting started on it right away.
+                You will recive an order confirmation email, and the the package will be shipped from the warehouse as soon as possible.</p>
+            <div class="list">
+            </div>
+        </div>
     </div>
-    <div class="btn">
-        <button class="close">CLOSE</button>
-        <button class="checkOut"><a href="../checkout/">CHECKOUT</a></button>
+</div>
+
+<div class="receipt">
+    <h2>Order summary:</h2>
+    <div class="receipt-list"></div>
+    <div class="totals">
+        <div>Total Quantity: <span class="totalQuantity"></span></div>
+        <div>Total Price: <span class="totalPrice"></span></div>
     </div>
+</div>
+
+
+<div class="container">
+    <a href="../product/">keep on shopping!</a>
 </div>
 
 <div class="loader"></div>
@@ -68,7 +70,7 @@
     <div class="follow">
         <div class="follow-container">
             <div class="rainylogo">
-                <img src="../image/rainydayslogowhite.png" alt="Rainy Days Logo">
+                <img src="../../image/rainydayslogowhite.png" alt="Rainy Days Logo">
             </div>
             <div class="follow-us">
                 <h2>Follow Us:</h2>
@@ -81,15 +83,15 @@
             <div class="follow-us">
                 <h2>About Us:</h2>
                 <div class="about-info">
-                    <a href="../about/index.html">About Us</a>
-                    <a href="../about/privacy.html">Privacy Policy</a>
-                    <a href="../about/terms.html">Terms and conditions</a>
+                    <a href="../../about/index.html">About Us</a>
+                    <a href="../../about/privacy.html">Privacy Policy</a>
+                    <a href="../../about/terms.html">Terms and conditions</a>
                 </div>
             </div>
         </div>
     </div>
 </footer>
 
-<script src="../js/product.js"></script>
+<script src="../../js/confirmation.js"></script>
 </body>
 </html>
