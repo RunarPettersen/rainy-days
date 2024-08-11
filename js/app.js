@@ -53,7 +53,6 @@ const addProductToCart = (productId, size) => {
 
 const updateDetailWithRandomProduct = () => {
     const thisProduct = getRandomProduct();
-    console.log('Updating detail with random product:', thisProduct);
 
     if (!thisProduct || !thisProduct.image) {
         console.error('Invalid product returned by getRandomProduct:', thisProduct);

@@ -54,7 +54,7 @@ header .icon-cart span {
     display: flex;
     width: 30px;
     height: 30px;
-    background-color: #000;
+    background-color: #8b0000;
     justify-content: center;
     align-items: center;
     color: #fff;
@@ -135,7 +135,7 @@ header .icon-cart span {
 .cartTab {
     width: 450px;
     background-color: #739db1;
-    color: #fff;
+    color: #000;
     position: fixed;
     inset: 0 -450px 0 auto;
     display: grid;
@@ -180,7 +180,7 @@ body.showCart .container, body.showCart header {
 
 .cartTab a {
     text-decoration: none;
-    color: #000;
+    color: #fff;
 }
 
 .cartTab .btn button {
@@ -189,6 +189,7 @@ body.showCart .container, body.showCart header {
     font-family: poppins;
     font-weight: 700;
     cursor: pointer;
+    color: #fff;
 }
 
 .cartTab .listCart img {
