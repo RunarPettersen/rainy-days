@@ -19,7 +19,7 @@ body {
     text-transform: uppercase;
     color: #0a3641;
     font-weight: 800;
-    font-size: larger;
+    font-size: 2rem;
     text-decoration: none;
 }
 
@@ -46,7 +46,7 @@ header {
     text-transform: uppercase;
     color: #0a3641;
     font-weight: 800;
-    font-size: larger;
+    font-size: 2rem;
     text-decoration: none;
 }
 
@@ -65,7 +65,7 @@ header .icon-cart span {
     color: #fff;
     border-radius: 50%;
     position: absolute;
-    top: 50%;
+    top: 35%;
     right: -20px;
 }
 
@@ -140,7 +140,7 @@ header .icon-cart span {
 .cartTab {
     width: 450px;
     background-color: #739db1;
-    color: #000;
+    color: #fff;
     position: fixed;
     inset: 0 -450px 0 auto;
     display: grid;
@@ -178,8 +178,8 @@ body.showCart .container, body.showCart header {
 }
 
 .cartTab .btn {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    justify-content: center;
     height: 70px;
 }
 
@@ -195,12 +195,17 @@ body.showCart .container, body.showCart header {
     font-weight: 700;
     cursor: pointer;
     color: #fff;
+    width: 100%;
 }
 
 .cartTab .listCart img {
     width: 100%;
     border-radius: 10px;
 }
+
+/* .quantity {
+    width: 2px;
+} */
 
 .cartTab .listCart .image {
     padding-left: 10px;
@@ -440,6 +445,10 @@ footer svg {
     .rainylogo {
         display: none;
     }
+
+    .menu-line, .menu-line a {
+        font-size: 1.5rem;
+    }
 }
 
 @media screen and (max-width: 450px) {
@@ -461,5 +470,9 @@ footer svg {
         grid-template-columns: 60px 100px 35px 35px 1fr;
         gap: 8px;
         font-size: 14px;
+    }
+
+    .menu-line, .menu-line a {
+        font-size: 1rem;
     }
 }
