@@ -106,7 +106,7 @@ const addDataToHTML = () => {
                 `<a href="product/index.html?id=${product.id}"><img src="${product.image}" alt="${product.title}"></a>
                 <h2>${product.title}</h2>
                 <div class="price">$${product.price}</div>
-                <select class="sizeSelector">${sizesOptions}</select>
+                <select class="sizeSelector" aria-label="Size selector">${sizesOptions}</select>
                 <button class="addCart">Add To Cart</button>`;
             listProductHTML.appendChild(newProduct);
         });

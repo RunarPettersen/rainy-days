@@ -43,6 +43,11 @@ header {
     display: flex;
     width: 900px;
     justify-content: space-evenly;
+    text-transform: uppercase;
+    color: #0a3641;
+    font-weight: 800;
+    font-size: larger;
+    text-decoration: none;
 }
 
 header .icon-cart {
