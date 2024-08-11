@@ -30,12 +30,7 @@ const getRandomProduct = () => {
     return products[randomIndex];
 };
 
-const addProductToCart = (productId, size) => {
-    console.log(`Adding product to cart: ${productId}, size: ${size}`);
-    if (!size) {
-        size = 'Undefined';
-    }
-
+const addProductToCart = (productId, size = 'Undefined') => {
     let positionThisProductInCart = cart.findIndex((value) => value.product_id == productId && value.size == size);
     if (positionThisProductInCart < 0) {
         cart.push({
@@ -46,7 +41,6 @@ const addProductToCart = (productId, size) => {
     } else {
         cart[positionThisProductInCart].quantity += 1;
     }
-    console.log('Cart after adding product:', cart);
     addCartToHTML();
     addCartToMemory();
 };
@@ -64,6 +58,7 @@ const updateDetailWithRandomProduct = () => {
 
     const img = document.createElement('img');
     img.src = thisProduct.image;
+    img.alt = thisProduct.title;
 
     anchor.appendChild(img);
 
@@ -94,7 +89,6 @@ const updateDetailWithRandomProduct = () => {
 };
 
 const addDataToHTML = () => {
-    console.log('Adding data to HTML');
     if (products.length > 0) {
         listProductHTML.innerHTML = '';
         products.forEach(product => {
@@ -130,11 +124,9 @@ if (listProductHTML) {
 
 const addCartToMemory = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
-    console.log('Cart saved to local storage:', localStorage.getItem('cart'));
 };
 
 const addCartToHTML = () => {
-    console.log('Updating cart HTML');
     listCartHTML.innerHTML = '';
     let totalQuantity = 0;
     let totalPrice = 0;
@@ -152,10 +144,6 @@ const addCartToHTML = () => {
                 return;
             }
             let info = products[positionProduct];
-            if (!info || !info.image) {
-                console.error('Invalid product info for cart item:', info);
-                return;
-            }
             listCartHTML.appendChild(newItem);
             newItem.innerHTML = `
             <div class="image">
@@ -178,19 +166,15 @@ const addCartToHTML = () => {
 
         let totalDiv = document.createElement('div');
         totalDiv.classList.add('total');
-        totalDiv.innerHTML = `
-        <h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
+        totalDiv.innerHTML = `<h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
         listCartHTML.appendChild(totalDiv);
     } else {
-        // If the cart is empty, display "Cart is empty" message
         let emptyMessage = document.createElement('div');
         emptyMessage.classList.add('empty-cart-message');
         emptyMessage.innerText = 'Cart is empty';
         listCartHTML.appendChild(emptyMessage);
     }
-    
     iconCartSpan.innerText = totalQuantity;
-    console.log('Cart HTML updated. Total quantity:', totalQuantity);
 };
 
 if (listCartHTML) {
@@ -211,10 +195,8 @@ if (listCartHTML) {
 }
 
 const changeQuantityCart = (product_id, size, type) => {
-    console.log(`Changing quantity of product in cart: ${product_id}, size: ${size}, type: ${type}`);
     let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
     if (positionItemInCart >= 0) {
-        let info = cart[positionItemInCart];
         switch (type) {
             case 'plus':
                 cart[positionItemInCart].quantity += 1;
@@ -229,17 +211,14 @@ const changeQuantityCart = (product_id, size, type) => {
                 break;
         }
     }
-    console.log('Cart after changing quantity:', cart);
     addCartToHTML();
     addCartToMemory();
 };
 
 window.addEventListener("load", () => {
     const loader = document.querySelector(".loader");
-
     if (loader) {
         loader.classList.add("loader-hidden");
-
         loader.addEventListener("transitionend", () => {
             if (loader.parentNode) {
                 loader.parentNode.removeChild(loader);
@@ -255,7 +234,6 @@ const initApp = async () => {
         const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
         const data = await response.json();
         products = data;
-        console.log('Products fetched:', products);
         addDataToHTML();
         updateDetailWithRandomProduct();
 
