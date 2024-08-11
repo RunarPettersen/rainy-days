@@ -179,15 +179,22 @@ body.showCart .container, body.showCart header {
 
 .cartTab .btn {
     display: flex;
-    justify-content: center;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    column-gap: 10%;
     height: 70px;
+    align-items: center;
+    text-align: center;
+    background-color: #0a3641;
 }
 
-.cartTab a {
-    text-decoration: none;
+.cartTab .btn a, .cartTab .btn .close {
     color: #fff;
+    text-decoration: none;
+    font-weight: 500;
 }
 
+/* 
 .cartTab .btn button {
     background-color: #477286;
     border-color: #739db1;
@@ -196,16 +203,26 @@ body.showCart .container, body.showCart header {
     cursor: pointer;
     color: #fff;
     width: 100%;
+    font-size: 1rem;
 }
+
+.cartTab .btn a:link, .cartTab .btn a:visited, .cartTab .btn p {
+    background-color: #477286;
+    border-color: #739db1;
+    font-family: poppins;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+  } */
 
 .cartTab .listCart img {
     width: 100%;
     border-radius: 10px;
 }
-
-/* .quantity {
-    width: 2px;
-} */
 
 .cartTab .listCart .image {
     padding-left: 10px;
