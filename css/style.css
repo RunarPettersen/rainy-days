@@ -144,7 +144,7 @@ header .icon-cart span {
     position: fixed;
     inset: 0 -450px 0 auto;
     display: grid;
-    grid-template-rows: 70px 1fr 70px;
+    grid-template-rows: 70px 1fr 74px;
     transition: .5s;
     z-index: 999;
 }
@@ -179,19 +179,40 @@ body.showCart .container, body.showCart header {
 
 .cartTab .btn {
     display: flex;
-    flex-flow: row wrap;
-    justify-content: space-evenly;
-    column-gap: 10%;
-    height: 70px;
+    justify-content: space-between; /* Ensure even space between elements */
     align-items: center;
     text-align: center;
     background-color: #0a3641;
+    border: 2px solid #fff; /* Optional: Add border */
+    border-radius: 8px; /* Optional: rounded corners */
+    height: 70px;
+    padding: 0 20px; /* Padding inside the button container */
+    position: relative; /* Required for the split line */
 }
 
-.cartTab .btn a, .cartTab .btn .close {
+.cartTab .btn p, .cartTab .btn a {
     color: #fff;
     text-decoration: none;
     font-weight: 500;
+    display: flex; /* Make the elements flex items */
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+    flex-grow: 1; /* Allow the buttons to grow and take equal space */
+    margin: 0; /* Remove default margin */
+    text-align: center;
+    min-width: 50%; /* Ensure each button takes up at least 50% of the space */
+}
+
+/* Add a split line in the middle */
+.cartTab .btn::before {
+    content: '';
+    position: absolute;
+    top: 10px; /* Adjust the line's vertical positioning */
+    bottom: 10px; /* Ensure the line doesn't touch the top/bottom borders */
+    left: 50%; /* Position the line in the middle horizontally */
+    width: 2px; /* Line thickness */
+    background-color: #fff; /* Line color */
+    transform: translateX(-50%);
 }
 
 /* 
