@@ -212,4 +212,13 @@
         display: grid;
         grid-template-columns: 80px 1fr;
     }
+
+    .receipt-list .item {
+        grid-template-columns: 180px 1fr 80px;
+        font-size: 1rem;
+    }
+
+    .receipt-list img {
+        display: none;
+    }
 }
