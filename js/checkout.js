@@ -229,6 +229,21 @@ const removeFromCart = (product_id, size) => {
     console.log('Cart after removing product:', cart);
 };
 
+const checkoutShippingSelect = document.querySelector('#shipping');
+const checkoutShippingCost = document.querySelector('.shippingCost');
+const checkoutFinalTotal = document.querySelector('.finalTotal');
+
+const calculateFinalTotal = () => {
+    let shippingCost = parseFloat(checkoutShippingSelect.selectedOptions[0].dataset.price);
+    let cartTotalPrice = parseFloat(checkoutTotalPrice.innerText.replace('$', ''));
+    let finalTotal = cartTotalPrice + shippingCost;
+
+    checkoutShippingCost.innerText = `$${shippingCost.toFixed(2)}`;
+    checkoutFinalTotal.innerText = `$${finalTotal.toFixed(2)}`;
+};
+
+checkoutShippingSelect.addEventListener('change', calculateFinalTotal);
+
 const updateCheckoutPage = () => {
     if (checkoutList) {
         checkoutList.innerHTML = '';
@@ -258,23 +273,20 @@ const updateCheckoutPage = () => {
                 </div>`;
                 totalPrice += info.price * item.quantity;
             });
-        } else {
 
+            if (checkoutTotalQuantity) {
+                checkoutTotalQuantity.innerText = totalQuantity;
+            }
+            if (checkoutTotalPrice) {
+                checkoutTotalPrice.innerText = `$${totalPrice.toFixed(2)}`;
+            }
+            calculateFinalTotal(); // Calculate the final total after updating the prices
+
+        } else {
             let emptyMessage = document.createElement('div');
             emptyMessage.classList.add('empty-cart-message');
             emptyMessage.innerText = 'No items in cart';
             checkoutList.appendChild(emptyMessage);
-        }
-
-        if (checkoutTotalQuantity) {
-            checkoutTotalQuantity.innerText = totalQuantity;
-        } else {
-            console.error('checkoutTotalQuantity element not found');
-        }
-        if (checkoutTotalPrice) {
-            checkoutTotalPrice.innerText = `$${totalPrice.toFixed(2)}`;
-        } else {
-            console.error('checkoutTotalPrice element not found');
         }
     } else {
         console.error('checkoutList element not found');
@@ -286,6 +298,11 @@ document.getElementById('placeOrder').addEventListener('click', () => {
         alert('Your cart is empty. Please add items to your cart before placing an order.');
         return; // Stop the function if the cart is empty
     }
+
+    // Save the selected shipping cost
+    const shippingCost = parseFloat(document.querySelector('#shipping').selectedOptions[0].dataset.price);
+    localStorage.setItem('shippingCost', shippingCost);
+
     // Save the current cart as a receipt
     const receipt = cart.map(item => {
         const product = products.find(p => p.id === item.product_id);
@@ -378,4 +395,4 @@ const initApp = async () => {
     }
 };
 
-document.addEventListener('DOMContentLoaded', initApp);
+window.addEventListener('DOMContentLoaded', initApp);

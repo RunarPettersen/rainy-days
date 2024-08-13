@@ -1,11 +1,14 @@
 let receiptList = document.querySelector('.receipt-list');
 let receiptTotalQuantity = document.querySelector('.totalQuantity');
 let receiptTotalPrice = document.querySelector('.totalPrice');
+let receiptShippingCost = document.querySelector('.shippingCost');
+let receiptFinalTotal = document.querySelector('.finalTotal');
 
 // Function to display the receipt on the confirmation page
 const displayReceipt = () => {
-    // Retrieve the receipt from localStorage
+    // Retrieve the receipt and shipping info from localStorage
     const receipt = JSON.parse(localStorage.getItem('receipt')) || [];
+    const shippingCost = parseFloat(localStorage.getItem('shippingCost')) || 0.00;
     console.log('Receipt:', receipt); // Log the receipt to check its content
     let totalQuantity = 0;
     let totalPrice = 0;
@@ -34,21 +37,24 @@ const displayReceipt = () => {
             totalPrice += item.price * item.quantity;
         });
 
+        // Update the receipt totals
         if (receiptTotalQuantity) {
             receiptTotalQuantity.innerText = totalQuantity;
         }
         if (receiptTotalPrice) {
             receiptTotalPrice.innerText = `$${totalPrice.toFixed(2)}`;
         }
+        if (receiptShippingCost) {
+            receiptShippingCost.innerText = `$${shippingCost.toFixed(2)}`;
+        }
+        if (receiptFinalTotal) {
+            let finalTotal = totalPrice + shippingCost;
+            receiptFinalTotal.innerText = `$${finalTotal.toFixed(2)}`;
+        }
     } else {
         receiptList.innerHTML = '<div class="empty-receipt-message">No items in receipt</div>';
     }
 };
-
-// Initialize the confirmation page
-document.addEventListener('DOMContentLoaded', () => {
-    displayReceipt();
-});
 
 // Function to generate the order number
 function generateOrderNumber() {
@@ -69,6 +75,7 @@ function displayOrderNumber() {
 
 // Initialize the confirmation page
 document.addEventListener('DOMContentLoaded', () => {
+    displayReceipt();
     displayOrderNumber();
 });
 

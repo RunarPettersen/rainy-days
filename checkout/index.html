@@ -39,10 +39,8 @@
 <div class="container">
     <div class="checkoutLayout">
         <div class="returnCart">
-            
             <h1>Products in Cart</h1>
-            <div class="list">
-            </div>
+            <div class="list"></div>
             <a href="../product/">keep shopping</a>
         </div>
         <div class="right">
@@ -74,6 +72,16 @@
                         <option value="London">London</option>
                     </select>
                 </div>
+
+                <!-- Shipping Options -->
+                <div class="group">
+                    <label for="shipping">Shipping Method</label>
+                    <select name="shipping" id="shipping">
+                        <option value="standard" data-price="5.00">Standard - $5.00</option>
+                        <option value="express" data-price="10.00">Express - $10.00</option>
+                        <option value="overnight" data-price="20.00">Overnight - $20.00</option>
+                    </select>
+                </div>
             </div>
             <div class="return">
                 <div class="row">
@@ -83,6 +91,14 @@
                 <div class="row">
                     <div>Total Price</div>
                     <div class="totalPrice">$0.00</div>
+                </div>
+                <div class="row">
+                    <div>Shipping Cost</div>
+                    <div class="shippingCost">$0.00</div>
+                </div>
+                <div class="row">
+                    <div>Final Total</div>
+                    <div class="finalTotal">$0.00</div>
                 </div>
             </div>
             <button class="buttonCheckout" id="placeOrder">PLACE ORDER</button>
