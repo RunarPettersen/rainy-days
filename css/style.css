@@ -165,6 +165,10 @@ body.showCart .container, body.showCart header {
     font-style: italic;
 }
 
+.cartTab {
+    color: #000;
+}
+
 .cartTab h1 {
     padding: 20px;
     margin: 0;
@@ -201,9 +205,9 @@ body.showCart .container, body.showCart header {
     margin: 0; /* Remove default margin */
     text-align: center;
     min-width: 50%; /* Ensure each button takes up at least 50% of the space */
+    cursor: pointer;
 }
 
-/* Add a split line in the middle */
 .cartTab .btn::before {
     content: '';
     position: absolute;
@@ -214,31 +218,6 @@ body.showCart .container, body.showCart header {
     background-color: #fff; /* Line color */
     transform: translateX(-50%);
 }
-
-/* 
-.cartTab .btn button {
-    background-color: #477286;
-    border-color: #739db1;
-    font-family: poppins;
-    font-weight: 700;
-    cursor: pointer;
-    color: #fff;
-    width: 100%;
-    font-size: 1rem;
-}
-
-.cartTab .btn a:link, .cartTab .btn a:visited, .cartTab .btn p {
-    background-color: #477286;
-    border-color: #739db1;
-    font-family: poppins;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    font-size: 1rem;
-    text-align: center;
-    text-decoration: none;
-    color: #fff;
-  } */
 
 .cartTab .listCart img {
     width: 100%;
@@ -275,6 +254,7 @@ body.showCart .container, body.showCart header {
 
 .listCart .item:nth-child(odd) {
     background-color: #477286;
+    color: #fff;
 }
 
 .listCart {

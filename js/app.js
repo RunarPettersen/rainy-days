@@ -8,7 +8,6 @@ let detail = document.querySelector('.main-heading');
 let products = [];
 let cart = [];
 
-// Ensure elements exist before adding event listeners
 if (iconCart) {
     iconCart.addEventListener('click', () => {
         body.classList.toggle('showCart');
