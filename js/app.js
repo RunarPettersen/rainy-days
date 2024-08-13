@@ -65,11 +65,25 @@ const updateDetailWithRandomProduct = () => {
     mainImageContainer.innerHTML = '';
     mainImageContainer.appendChild(anchor);
 
-    detail.querySelector('.main-title h1').innerText = thisProduct.title;
-    detail.querySelector('.main-price').innerText = '$' + thisProduct.price.toFixed(2);
-    detail.querySelector('.main-description').innerText = thisProduct.description;
+    // Generate a unique suffix for the id
+    const uniqueSuffix = `${thisProduct.id}-${Date.now()}`;
+
+    // Adding id attributes for title, price, and description
+    const titleElement = detail.querySelector('.main-title h1');
+    titleElement.id = `product-title-${uniqueSuffix}`;
+    titleElement.innerText = thisProduct.title;
+
+    const priceElement = detail.querySelector('.main-price');
+    priceElement.id = `product-price-${uniqueSuffix}`;
+    priceElement.innerText = '$' + thisProduct.price.toFixed(2);
+
+    const descriptionElement = detail.querySelector('.main-description');
+    descriptionElement.id = `product-description-${uniqueSuffix}`;
+    descriptionElement.innerText = thisProduct.description;
 
     const sizeSelector = detail.querySelector('.sizeSelector');
+    sizeSelector.id = `sizeSelector-${uniqueSuffix}`;
+    sizeSelector.name = `size-${thisProduct.id}`;
     sizeSelector.innerHTML = thisProduct.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
 
     const addCartButton = detail.querySelector('.addCart');
@@ -94,12 +108,13 @@ const addDataToHTML = () => {
             let newProduct = document.createElement('div');
             newProduct.dataset.id = product.id;
             newProduct.classList.add('item');
+            const uniqueId = `sizeSelector-${product.id}-${Date.now()}`;
             let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
             newProduct.innerHTML =
                 `<a href="product/index.html?id=${product.id}"><img src="${product.image}" alt="${product.title}"></a>
                 <h2>${product.title}</h2>
                 <div class="price">$${product.price}</div>
-                <select class="sizeSelector" aria-label="Size selector">${sizesOptions}</select>
+                <select class="sizeSelector" aria-label="Size selector" id="${uniqueId}" name="size-${product.id}">${sizesOptions}</select>
                 <button class="addCart">Add To Cart</button>`;
             listProductHTML.appendChild(newProduct);
         });
@@ -131,7 +146,7 @@ const addCartToHTML = () => {
     let totalPrice = 0;
 
     if (cart.length > 0) {
-        cart.forEach(item => {
+        cart.forEach((item, index) => { // Add index here to track item position
             totalQuantity += item.quantity;
             let newItem = document.createElement('div');
             newItem.classList.add('item');
@@ -155,7 +170,7 @@ const addCartToHTML = () => {
                 Size: ${item.size}
             </div>
             <div class="totalPrice">$${(info.price * item.quantity).toFixed(2)}</div>
-            <div class="quantity">
+            <div class="quantity ${index % 2 === 0 ? 'odd' : 'even'}">
                 <span class="minus"><</span>
                 <span>${item.quantity}</span>
                 <span class="plus">></span>
@@ -175,23 +190,6 @@ const addCartToHTML = () => {
     }
     iconCartSpan.innerText = totalQuantity;
 };
-
-if (listCartHTML) {
-    listCartHTML.addEventListener('click', (event) => {
-        let positionClick = event.target;
-        if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
-            let product_id = positionClick.parentElement.parentElement.dataset.id;
-            let size = positionClick.parentElement.parentElement.dataset.size;
-            let type = 'minus';
-            if (positionClick.classList.contains('plus')) {
-                type = 'plus';
-            }
-            changeQuantityCart(product_id, size, type);
-        }
-    });
-} else {
-    console.error('listCartHTML element not found');
-}
 
 const changeQuantityCart = (product_id, size, type) => {
     let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);

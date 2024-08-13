@@ -257,6 +257,16 @@ body.showCart .container, body.showCart header {
     color: #fff;
 }
 
+.listCart .quantity.odd span {
+    background-color: #fff;
+    color: #000;
+}
+
+.listCart .quantity.even span {
+    background-color: #477286;
+    color: #fff;
+}
+
 .listCart {
     overflow: auto;
 }
