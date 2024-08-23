@@ -71,7 +71,7 @@ const addDataToHTML = () => {
                 <div class="gender">Gender: ${product.gender}</div>
                 <div class="gender">Color: ${product.baseColor}</div>
                 <div class="price">$${product.price}</div>
-                <select class="sizeSelector">${sizesOptions}</select>
+                <select class="sizeSelector" id="${product.title}" name="${product.title}">${sizesOptions}</select>
                 <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
             myProductHTML.appendChild(productDetail);
             myProductHTML.style.display = 'block';
@@ -97,7 +97,7 @@ const addDataToHTML = () => {
                     <h2>${product.title}</h2>
                     <div class="description">${product.description}</div>
                     <div class="price">$${product.price}</div>
-                    <select class="sizeSelector">${sizesOptions}</select>
+                    <select class="sizeSelector" id="${product.title}" name="${product.title}">${sizesOptions}</select>
                     <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
                 myProductHTML.appendChild(newProduct);
             });

@@ -11,7 +11,6 @@ let checkoutTotalPrice = document.querySelector('.totalPrice');
 let products = [];
 let cart = [];
 
-// Ensure elements exist before adding event listeners
 if (iconCart) {
     iconCart.addEventListener('click', () => {
         body.classList.toggle('showCart');
@@ -70,7 +69,6 @@ const addDataToHTML = () => {
     if (products.length > 0) {
         if (listProductHTML) {
             listProductHTML.innerHTML = '';
-            // Slice the products array to get only the first 8 products
             const productsToShow = products.slice(0, 8);
             productsToShow.forEach(product => {
                 let newProduct = document.createElement('div');
@@ -81,7 +79,7 @@ const addDataToHTML = () => {
                     `<a href="../product/index.html?id=${product.id}"><img src="${product.image}" alt="${product.title}"></a>
                     <h2>${product.title}</h2>
                     <div class="price">$${product.price}</div>
-                    <select class="sizeSelector">${sizesOptions}</select>
+                    <select class="sizeSelector" id="${product.title}" name="${product.title}">${sizesOptions}</select>
                     <button class="addCart">Add To Cart</button>`;
                 listProductHTML.appendChild(newProduct);
             });
@@ -162,7 +160,6 @@ const addCartToHTML = () => {
         <h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
         listCartHTML.appendChild(totalDiv);
     } else {
-        // If the cart is empty, display "Cart is empty" message
         let emptyMessage = document.createElement('div');
         emptyMessage.classList.add('empty-cart-message');
         emptyMessage.innerText = 'Cart is empty';
@@ -280,7 +277,7 @@ const updateCheckoutPage = () => {
             if (checkoutTotalPrice) {
                 checkoutTotalPrice.innerText = `$${totalPrice.toFixed(2)}`;
             }
-            calculateFinalTotal(); // Calculate the final total after updating the prices
+            calculateFinalTotal();
 
         } else {
             let emptyMessage = document.createElement('div');
@@ -296,7 +293,7 @@ const updateCheckoutPage = () => {
 document.getElementById('placeOrder').addEventListener('click', () => {
     if (cart.length === 0) {
         alert('Your cart is empty. Please add items to your cart before placing an order.');
-        return; // Stop the function if the cart is empty
+        return;
     }
 
     // Save the selected shipping cost

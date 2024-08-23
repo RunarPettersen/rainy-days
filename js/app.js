@@ -81,9 +81,12 @@ const updateDetailWithRandomProduct = () => {
     descriptionElement.id = `product-description-${uniqueSuffix}`;
     descriptionElement.innerText = thisProduct.description;
 
+    // Select size selector and ensure it has both an id and a name attribute
     const sizeSelector = detail.querySelector('.sizeSelector');
-    sizeSelector.id = `sizeSelector-${uniqueSuffix}`;
-    sizeSelector.name = `size-${thisProduct.id}`;
+    sizeSelector.id = `sizeSelector-${uniqueSuffix}`;   // Ensure unique ID
+    sizeSelector.name = `size-${thisProduct.id}`;       // Ensure unique name
+
+    // Populate the size options
     sizeSelector.innerHTML = thisProduct.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
 
     const addCartButton = detail.querySelector('.addCart');
@@ -191,9 +194,27 @@ const addCartToHTML = () => {
     iconCartSpan.innerText = totalQuantity;
 };
 
+if (listCartHTML) {
+    listCartHTML.addEventListener('click', (event) => {
+        let positionClick = event.target;
+        if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
+            let product_id = positionClick.parentElement.parentElement.dataset.id;
+            let size = positionClick.parentElement.parentElement.dataset.size;
+            let type = 'minus';
+            if (positionClick.classList.contains('plus')) {
+                type = 'plus';
+            }
+            changeQuantityCart(product_id, size, type);
+        }
+    });
+} else {
+    console.error('listCartHTML element not found');
+}
+
 const changeQuantityCart = (product_id, size, type) => {
     let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
     if (positionItemInCart >= 0) {
+        let info = cart[positionItemInCart];
         switch (type) {
             case 'plus':
                 cart[positionItemInCart].quantity += 1;

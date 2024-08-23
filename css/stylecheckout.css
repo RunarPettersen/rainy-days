@@ -30,6 +30,11 @@
     grid-column-end: 3;
 }
 
+.checkoutLayout .form .group:nth-child(6) {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
 .checkoutLayout .form input,
 .checkoutLayout .form select {
     width: 100%;
@@ -39,6 +44,41 @@
     margin-top: 10px;
     border: none;
     background-color: lightblue;
+}
+
+.checkoutLayout .payment {
+    width: 100%;
+    padding: 10px 5px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-top: 10px;
+    border: none;
+    background-color: lightblue;
+}
+
+.checkoutLayout .payment .group {
+    padding: 5px 20px;
+    margin-top: 5px;
+}
+
+.checkoutLayout .payment .group input {
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-top: 10px;
+    border: none;
+    background-color: white;
+}
+
+.checkoutLayout .payment .group .date {
+    display: flex;
+    align-items: baseline;
+}
+
+.checkoutLayout .payment .group .date p {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .checkoutLayout .row {
