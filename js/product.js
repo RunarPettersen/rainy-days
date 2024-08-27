@@ -264,7 +264,7 @@ const initApp = async () => {
             addCartToHTML();
         }
     } catch (error) {
-        console.error('Error fetching products:', error);
+        alert('Error fetching products:', error);
     }
 };
 

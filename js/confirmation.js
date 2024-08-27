@@ -91,6 +91,6 @@ window.addEventListener("load", () => {
             }
         });
     } else {
-        console.error('Loader element not found');
+        alert('Loader element not found');
     }
 });

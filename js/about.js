@@ -8,21 +8,16 @@ let detail = document.querySelector('.main-heading');
 let products = [];
 let cart = [];
 
-// Check if the elements exist before adding event listeners
 if (iconCart) {
     iconCart.addEventListener('click', () => {
         body.classList.toggle('showCart');
     });
-} else {
-    console.error('iconCart element not found');
 }
 
 if (closeCart) {
     closeCart.addEventListener('click', () => {
         body.classList.toggle('showCart');
     });
-} else {
-    console.error('closeCart element not found');
 }
 
 const addToCart = (product_id, size) => {
@@ -96,7 +91,6 @@ const addCartToHTML = () => {
         <h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
         listCartHTML.appendChild(totalDiv);
     } else {
-        // If the cart is empty, display "Cart is empty" message
         let emptyMessage = document.createElement('div');
         emptyMessage.classList.add('empty-cart-message');
         emptyMessage.innerText = 'Cart is empty';
@@ -120,8 +114,6 @@ if (listCartHTML) {
             changeQuantityCart(product_id, size, type);
         }
     });
-} else {
-    console.error('listCartHTML element not found');
 }
 
 const changeQuantityCart = (product_id, size, type) => {
@@ -157,8 +149,6 @@ window.addEventListener("load", () => {
                 loader.parentNode.removeChild(loader);
             }
         });
-    } else {
-        console.error('Loader element not found');
     }
 });
 
@@ -175,7 +165,7 @@ const initApp = async () => {
             addCartToHTML();
         }
     } catch (error) {
-        console.error('Error fetching products:', error);
+        alert('Error fetching products:', error);
     }
 };
 

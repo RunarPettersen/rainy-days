@@ -149,7 +149,7 @@ const addCartToHTML = () => {
     let totalPrice = 0;
 
     if (cart.length > 0) {
-        cart.forEach((item, index) => { // Add index here to track item position
+        cart.forEach((item, index) => {
             totalQuantity += item.quantity;
             let newItem = document.createElement('div');
             newItem.classList.add('item');
@@ -261,7 +261,7 @@ const initApp = async () => {
             addCartToHTML();
         }
     } catch (error) {
-        console.error('Error fetching products:', error);
+        alert('Error fetching products:', error);
     }
 };
 

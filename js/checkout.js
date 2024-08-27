@@ -388,7 +388,7 @@ const initApp = async () => {
             updateCheckoutPage();
         }
     } catch (error) {
-        console.error('Error fetching products:', error);
+        alert('Error fetching products:', error);
     }
 };
 
