@@ -1,3 +1,8 @@
+import { addCartToHTML, changeQuantityCart } from './cart.js';
+import { setupLoader } from './loader.js';
+
+setupLoader();
+
 let listProductHTML = document.querySelector('.listProduct');
 let listCartHTML = document.querySelector('.listCart');
 let iconCart = document.querySelector('.icon-cart');
@@ -8,9 +13,14 @@ let detail = document.querySelector('.main-heading');
 let checkoutList = document.querySelector('.list');
 let checkoutTotalQuantity = document.querySelector('.totalQuantity');
 let checkoutTotalPrice = document.querySelector('.totalPrice');
+let checkoutShippingSelect = document.querySelector('#shipping');
+let checkoutShippingCost = document.querySelector('.shippingCost');
+let checkoutFinalTotal = document.querySelector('.finalTotal');
+let placeOrderButton = document.getElementById('placeOrder'); // Ensure this is correctly referenced
 let products = [];
 let cart = [];
 
+// Event listeners for cart toggling
 if (iconCart) {
     iconCart.addEventListener('click', () => {
         body.classList.toggle('showCart');
@@ -27,220 +37,74 @@ if (closeCart) {
     console.error('closeCart element not found');
 }
 
-const getRandomProduct = () => {
-    const randomIndex = Math.floor(Math.random() * products.length);
-    return products[randomIndex];
-};
-
-const addProductToCart = (productId, size = 'Undefined') => {
-    console.log(`Adding product to cart: ${productId}, size: ${size}`);
-    let positionThisProductInCart = cart.findIndex((value) => value.product_id == productId && value.size == size);
-    if (positionThisProductInCart < 0) {
-        cart.push({
-            product_id: productId,
-            size: size,
-            quantity: 1
+// Function to fetch and display products in HTML
+const addDataToHTML = () => {
+    if (products.length > 0 && listProductHTML) {
+        listProductHTML.innerHTML = '';
+        const productsToShow = products.slice(0, 8);
+        productsToShow.forEach(product => {
+            let newProduct = document.createElement('div');
+            newProduct.dataset.id = product.id;
+            newProduct.classList.add('item');
+            let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
+            newProduct.innerHTML =
+                `<a href="../product/index.html?id=${product.id}"><img src="${product.image}" alt="${product.title}"></a>
+                <h2>${product.title}</h2>
+                <div class="price">$${product.price}</div>
+                <select class="sizeSelector" id="${product.title}" name="${product.title}">${sizesOptions}</select>
+                <button class="addCart">Add To Cart</button>`;
+            listProductHTML.appendChild(newProduct);
         });
     } else {
-        cart[positionThisProductInCart].quantity += 1;
-    }
-    addCartToHTML();
-    addCartToMemory();
-    console.log('Cart after adding product:', cart);
-};
-
-const updateDetailWithRandomProduct = () => {
-    const thisProduct = getRandomProduct();
-    if (!thisProduct || !thisProduct.image) {
-        console.error('Invalid product returned by getRandomProduct:', thisProduct);
-        return;
-    }
-
-    const anchor = document.createElement('a');
-    anchor.href = `product/index.html?id=${thisProduct.id}`;
-
-    const img = document.createElement('img');
-    img.src = `${thisProduct.image}`;
-
-    anchor.appendChild(img);
-};
-
-const addDataToHTML = () => {
-    if (products.length > 0) {
-        if (listProductHTML) {
-            listProductHTML.innerHTML = '';
-            const productsToShow = products.slice(0, 8);
-            productsToShow.forEach(product => {
-                let newProduct = document.createElement('div');
-                newProduct.dataset.id = product.id;
-                newProduct.classList.add('item');
-                let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
-                newProduct.innerHTML =
-                    `<a href="../product/index.html?id=${product.id}"><img src="${product.image}" alt="${product.title}"></a>
-                    <h2>${product.title}</h2>
-                    <div class="price">$${product.price}</div>
-                    <select class="sizeSelector" id="${product.title}" name="${product.title}">${sizesOptions}</select>
-                    <button class="addCart">Add To Cart</button>`;
-                listProductHTML.appendChild(newProduct);
-            });
-        } else {
-            console.error('listProductHTML element not found');
-        }
+        console.error('listProductHTML element not found');
     }
 };
 
+// Event listener for adding products to cart
 if (listProductHTML) {
     listProductHTML.addEventListener('click', (event) => {
         let positionClick = event.target;
         if (positionClick.classList.contains('addCart')) {
             let id_product = positionClick.parentElement.dataset.id;
             let size = positionClick.parentElement.querySelector('.sizeSelector').value;
-            addProductToCart(id_product, size);
+            addToCart(id_product, size);
         }
     });
 } else {
     console.error('listProductHTML element not found');
 }
 
+// Function to add a product to the cart
+const addToCart = (product_id, size) => {
+    if (!size) {
+        size = 'Undefined';
+    }
+    let positionThisProductInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
+    if (positionThisProductInCart < 0) {
+        cart.push({
+            product_id: product_id,
+            size: size,
+            quantity: 1
+        });
+    } else {
+        cart[positionThisProductInCart].quantity += 1;
+    }
+    console.log('Cart after adding item:', cart); // Debugging line
+    addCartToHTML(cart, products, listCartHTML, iconCartSpan); // Use the imported function
+    addCartToMemory();
+};
+
+// Function to save cart to localStorage
 const addCartToMemory = () => {
     try {
         localStorage.setItem('cart', JSON.stringify(cart));
-        console.log('Cart saved to local storage:', localStorage.getItem('cart'));
+        console.log('Cart saved to local storage:', JSON.parse(localStorage.getItem('cart'))); // Debugging line
     } catch (error) {
         console.error('Error saving cart to local storage:', error);
     }
 };
 
-const addCartToHTML = () => {
-    console.log('Updating cart HTML');
-    listCartHTML.innerHTML = '';
-    let totalQuantity = 0;
-    let totalPrice = 0;
-
-    if (cart.length > 0) {
-        cart.forEach(item => {
-            totalQuantity += item.quantity;
-            let newItem = document.createElement('div');
-            newItem.classList.add('item');
-            newItem.dataset.id = item.product_id;
-            newItem.dataset.size = item.size;
-            let positionProduct = products.findIndex((value) => value.id == item.product_id);
-            if (positionProduct === -1) {
-                console.error('Product not found for cart item:', item);
-                return;
-            }
-            let info = products[positionProduct];
-            if (!info || !info.image) {
-                console.error('Invalid product info for cart item:', info);
-                return;
-            }
-            listCartHTML.appendChild(newItem);
-            newItem.innerHTML = `
-            <div class="image">
-                <img src="${info.image}" alt="${info.title}">
-            </div>
-            <div class="title">
-                ${info.title}
-            </div>
-            <div class="size">
-                Size: ${item.size}
-            </div>
-            <div class="totalPrice">$${(info.price * item.quantity).toFixed(2)}</div>
-            <div class="quantity">
-                <span class="minus"><</span>
-                <span>${item.quantity}</span>
-                <span class="plus">></span>
-            </div>`;
-            totalPrice += info.price * item.quantity;
-        });
-
-        let totalDiv = document.createElement('div');
-        totalDiv.classList.add('total');
-        totalDiv.innerHTML = `
-        <h3>Total Price: $${totalPrice.toFixed(2)}</h3>`;
-        listCartHTML.appendChild(totalDiv);
-    } else {
-        let emptyMessage = document.createElement('div');
-        emptyMessage.classList.add('empty-cart-message');
-        emptyMessage.innerText = 'Cart is empty';
-        listCartHTML.appendChild(emptyMessage);
-    }
-    
-    iconCartSpan.innerText = totalQuantity;
-    console.log('Cart HTML updated. Total quantity:', totalQuantity);
-};
-
-
-if (listCartHTML) {
-    listCartHTML.addEventListener('click', (event) => {
-        let positionClick = event.target;
-        if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
-            let product_id = positionClick.parentElement.parentElement.dataset.id;
-            let size = positionClick.parentElement.parentElement.dataset.size;
-            let type = 'minus';
-            if (positionClick.classList.contains('plus')) {
-                type = 'plus';
-            }
-            changeQuantityCart(product_id, size, type);
-        } else if (positionClick.classList.contains('removeItem')) {
-            let product_id = positionClick.parentElement.dataset.id;
-            let size = positionClick.parentElement.dataset.size;
-            removeFromCart(product_id, size);
-        }
-    });
-} else {
-    console.error('listCartHTML element not found');
-}
-
-const changeQuantityCart = (product_id, size, type) => {
-    let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
-    if (positionItemInCart >= 0) {
-        let info = cart[positionItemInCart];
-        switch (type) {
-            case 'plus':
-                cart[positionItemInCart].quantity += 1;
-                break;
-            default:
-                let changeQuantity = cart[positionItemInCart].quantity - 1;
-                if (changeQuantity > 0) {
-                    cart[positionItemInCart].quantity = changeQuantity;
-                } else {
-                    cart.splice(positionItemInCart, 1);
-                }
-                break;
-        }
-    }
-    addCartToHTML();
-    addCartToMemory();
-    console.log('Cart after quantity change:', cart);
-};
-
-const removeFromCart = (product_id, size) => {
-    let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
-    if (positionItemInCart >= 0) {
-        cart.splice(positionItemInCart, 1);
-    }
-    addCartToHTML();
-    addCartToMemory();
-    updateCheckoutPage();
-    console.log('Cart after removing product:', cart);
-};
-
-const checkoutShippingSelect = document.querySelector('#shipping');
-const checkoutShippingCost = document.querySelector('.shippingCost');
-const checkoutFinalTotal = document.querySelector('.finalTotal');
-
-const calculateFinalTotal = () => {
-    let shippingCost = parseFloat(checkoutShippingSelect.selectedOptions[0].dataset.price);
-    let cartTotalPrice = parseFloat(checkoutTotalPrice.innerText.replace('$', ''));
-    let finalTotal = cartTotalPrice + shippingCost;
-
-    checkoutShippingCost.innerText = `$${shippingCost.toFixed(2)}`;
-    checkoutFinalTotal.innerText = `$${finalTotal.toFixed(2)}`;
-};
-
-checkoutShippingSelect.addEventListener('change', calculateFinalTotal);
-
+// Function to update the checkout page display
 const updateCheckoutPage = () => {
     if (checkoutList) {
         checkoutList.innerHTML = '';
@@ -254,8 +118,11 @@ const updateCheckoutPage = () => {
                 newItem.dataset.id = item.product_id;
                 newItem.dataset.size = item.size;
                 let positionProduct = products.findIndex((value) => value.id == item.product_id);
+                if (positionProduct === -1) {
+                    console.error('Product not found for cart item:', item);
+                    return;
+                }
                 let info = products[positionProduct];
-                checkoutList.appendChild(newItem);
                 newItem.innerHTML = `
                 <img src="${info.image}" alt="${info.title}">
                 <div class="info">
@@ -268,6 +135,7 @@ const updateCheckoutPage = () => {
                     <div class="returnPrice">$${(info.price * item.quantity).toFixed(2)}</div>
                     <button class="removeItem">Remove</button>
                 </div>`;
+                checkoutList.appendChild(newItem);
                 totalPrice += info.price * item.quantity;
             });
 
@@ -277,7 +145,7 @@ const updateCheckoutPage = () => {
             if (checkoutTotalPrice) {
                 checkoutTotalPrice.innerText = `$${totalPrice.toFixed(2)}`;
             }
-            calculateFinalTotal();
+            calculateFinalTotal(); // Recalculate total including shipping
 
         } else {
             let emptyMessage = document.createElement('div');
@@ -290,14 +158,37 @@ const updateCheckoutPage = () => {
     }
 };
 
-document.getElementById('placeOrder').addEventListener('click', () => {
+// Function to calculate the final total including shipping cost
+const calculateFinalTotal = () => {
+    if (checkoutShippingSelect && checkoutShippingCost && checkoutFinalTotal) {
+        let shippingCost = parseFloat(checkoutShippingSelect.selectedOptions[0].dataset.price);
+        let cartTotalPrice = parseFloat(checkoutTotalPrice.innerText.replace('$', ''));
+        let finalTotal = cartTotalPrice + shippingCost;
+
+        checkoutShippingCost.innerText = `$${shippingCost.toFixed(2)}`;
+        checkoutFinalTotal.innerText = `$${finalTotal.toFixed(2)}`;
+        console.log('Final total calculated:', finalTotal); // Debugging line
+    } else {
+        console.error('Shipping or total elements not found');
+    }
+};
+
+// Event listener for shipping selection change
+if (checkoutShippingSelect) {
+    checkoutShippingSelect.addEventListener('change', calculateFinalTotal);
+} else {
+    console.error('checkoutShippingSelect element not found');
+}
+
+// Function to handle placing an order
+const placeOrder = () => {
     if (cart.length === 0) {
         alert('Your cart is empty. Please add items to your cart before placing an order.');
         return;
     }
 
     // Save the selected shipping cost
-    const shippingCost = parseFloat(document.querySelector('#shipping').selectedOptions[0].dataset.price);
+    const shippingCost = parseFloat(checkoutShippingSelect.selectedOptions[0].dataset.price);
     localStorage.setItem('shippingCost', shippingCost);
 
     // Save the current cart as a receipt
@@ -317,44 +208,14 @@ document.getElementById('placeOrder').addEventListener('click', () => {
     // Clear the cart
     localStorage.removeItem('cart');
     window.location.href = 'confirmation/index.html';
-});
-
-// Event listener for remove buttons on the checkout page
-if (checkoutList) {
-    checkoutList.addEventListener('click', (event) => {
-        let positionClick = event.target;
-        if (positionClick.classList.contains('removeItem')) {
-            let product_id = positionClick.closest('.item').dataset.id;
-            let size = positionClick.closest('.item').dataset.size;
-            removeFromCart(product_id, size);
-        }
-    });
-} else {
-    console.error('checkoutList element not found');
-}
-
-// Event listener for remove buttons on the checkout page
-if (checkoutList) {
-    checkoutList.addEventListener('click', (event) => {
-        let positionClick = event.target;
-        if (positionClick.classList.contains('removeItem')) {
-            let product_id = positionClick.parentElement.dataset.id;
-            let size = positionClick.parentElement.dataset.size;
-            removeFromCart(product_id, size);
-        }
-    });
-} else {
-    console.error('checkoutList element not found');
-}
-
-const saveCartAsReceipt = () => {
-    localStorage.setItem('receipt', JSON.stringify(cart)); // Save the cart as a receipt
-    localStorage.removeItem('cart'); // Clear the cart from local storage
-    cart = []; // Clear the cart in memory
-    addCartToHTML(); // Update the cart display
-    updateCheckoutPage(); // Update the checkout page
-    console.log('Cart saved as receipt and cleared.');
 };
+
+// Event listener for the Place Order button
+if (placeOrderButton) {
+    placeOrderButton.addEventListener('click', placeOrder);
+} else {
+    console.error('Place order button not found');
+}
 
 window.addEventListener("load", () => {
     const loader = document.querySelector(".loader");
@@ -372,23 +233,27 @@ window.addEventListener("load", () => {
     }
 });
 
+// Initialize the application and fetch products
 const initApp = async () => {
     try {
         const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
         const data = await response.json();
         products = data;
         addDataToHTML();
-        updateDetailWithRandomProduct();
 
+        // Retrieve the cart from local storage
         const storedCart = localStorage.getItem('cart');
-        console.log('Stored cart from local storage:', storedCart);
         if (storedCart) {
             cart = JSON.parse(storedCart);
-            addCartToHTML();
-            updateCheckoutPage();
+            console.log('Loaded cart from local storage:', cart); // Debugging line
+            addCartToHTML(cart, products, listCartHTML, iconCartSpan); // Use the imported function
+            updateCheckoutPage(); // Update checkout display
+        } else {
+            cart = [];
+            updateCheckoutPage(); // Display empty state
         }
     } catch (error) {
-        alert('Error fetching products:', error);
+        console.error('Error fetching products:', error);
     }
 };
 

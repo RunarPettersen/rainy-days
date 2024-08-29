@@ -1,3 +1,7 @@
+import { setupLoader } from './loader.js';
+
+setupLoader();
+
 let receiptList = document.querySelector('.receipt-list');
 let receiptTotalQuantity = document.querySelector('.totalQuantity');
 let receiptTotalPrice = document.querySelector('.totalPrice');
@@ -77,20 +81,4 @@ function displayOrderNumber() {
 document.addEventListener('DOMContentLoaded', () => {
     displayReceipt();
     displayOrderNumber();
-});
-
-window.addEventListener("load", () => {
-    const loader = document.querySelector(".loader");
-
-    if (loader) {
-        loader.classList.add("loader-hidden");
-
-        loader.addEventListener("transitionend", () => {
-            if (loader.parentNode) {
-                loader.parentNode.removeChild(loader);
-            }
-        });
-    } else {
-        alert('Loader element not found');
-    }
 });

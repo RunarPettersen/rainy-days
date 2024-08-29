@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Atomic+Age&family=Pirata+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik+Maps&display=swap');
 
+:root {
+    --darkgreen: #0a3641;
+    --darkblue: #739db1;
+}
+
 body {
     font-family: "Poppins", sans-serif;
     margin: 0;
@@ -17,7 +22,7 @@ body {
 
 .menu-line a {
     text-transform: uppercase;
-    color: #0a3641;
+    color: var(--darkgreen);
     font-weight: 800;
     font-size: 2rem;
     text-decoration: none;
@@ -44,7 +49,7 @@ header {
     width: 900px;
     justify-content: space-evenly;
     text-transform: uppercase;
-    color: #0a3641;
+    color: var(--darkgreen);
     font-weight: 800;
     font-size: 2rem;
     text-decoration: none;
@@ -83,7 +88,7 @@ header .icon-cart span {
     width: 350px;
     height: 350px;
     border-radius: 50%;
-    border: 10px solid #0a3641;
+    border: 10px solid var(--darkgreen);
     object-fit: cover;
 }
 
@@ -94,7 +99,7 @@ header .icon-cart span {
 }
 
 .main-info button {
-    background-color: #0a3641;
+    background-color: var(--darkgreen);
     color: #fff;
     padding: 5px 10px;
     border-radius: 20px;
@@ -118,7 +123,7 @@ header .icon-cart span {
 }
 
 .listProduct .item {
-    background-color: #739db1;
+    background-color: var(--darkblue);
     padding: 20px;
     border-radius: 20px;
 }
@@ -128,7 +133,7 @@ header .icon-cart span {
 }
 
 .listProduct .item button {
-    background-color: #0a3641;
+    background-color: var(--darkgreen);
     color: #fff;
     padding: 5px 10px;
     border-radius: 20px;
@@ -137,9 +142,14 @@ header .icon-cart span {
     cursor: pointer;
 }
 
+.sizeSelector {
+    padding: 4px;
+    margin-right: 5px;
+}
+
 .cartTab {
     width: 450px;
-    background-color: #739db1;
+    background-color: var(--darkblue);
     color: #fff;
     position: fixed;
     inset: 0 -450px 0 auto;
@@ -183,39 +193,39 @@ body.showCart .container, body.showCart header {
 
 .cartTab .btn {
     display: flex;
-    justify-content: space-between; /* Ensure even space between elements */
+    justify-content: space-between;
     align-items: center;
     text-align: center;
-    background-color: #0a3641;
-    border: 2px solid #fff; /* Optional: Add border */
-    border-radius: 8px; /* Optional: rounded corners */
+    background-color: var(--darkgreen);
+    border: 2px solid #fff;
+    border-radius: 8px;
     height: 70px;
-    padding: 0 20px; /* Padding inside the button container */
-    position: relative; /* Required for the split line */
+    padding: 0 20px;
+    position: relative;
 }
 
 .cartTab .btn p, .cartTab .btn a {
     color: #fff;
     text-decoration: none;
     font-weight: 500;
-    display: flex; /* Make the elements flex items */
-    justify-content: center; /* Center text horizontally */
-    align-items: center; /* Center text vertically */
-    flex-grow: 1; /* Allow the buttons to grow and take equal space */
-    margin: 0; /* Remove default margin */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    margin: 0;
     text-align: center;
-    min-width: 50%; /* Ensure each button takes up at least 50% of the space */
+    min-width: 50%;
     cursor: pointer;
 }
 
 .cartTab .btn::before {
     content: '';
     position: absolute;
-    top: 10px; /* Adjust the line's vertical positioning */
-    bottom: 10px; /* Ensure the line doesn't touch the top/bottom borders */
-    left: 50%; /* Position the line in the middle horizontally */
-    width: 2px; /* Line thickness */
-    background-color: #fff; /* Line color */
+    top: 10px;
+    bottom: 10px;
+    left: 50%;
+    width: 2px;
+    background-color: #fff;
     transform: translateX(-50%);
 }
 
@@ -299,7 +309,7 @@ footer svg {
 }
 
 .follow {
-    background-color: #0a3641;
+    background-color: var(--darkgreen);
 }
 
 .about-info {
@@ -416,7 +426,7 @@ footer svg {
     content: "";
     width: 75px;
     height: 75px;
-    border: 15px solid #0a3641;
+    border: 15px solid var(--darkgreen);
     border-top-color: #477286;
     border-radius: 50%;
     animation: loading 0.75s ease infinite;
