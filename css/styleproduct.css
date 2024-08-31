@@ -25,7 +25,7 @@
     background-color: #0a3641;
     color: #fff;
     padding: 5px 10px;
-    border-radius: 20px;
+    border-radius: 5px;
     margin-top: 10px;
     border: none;
     cursor: pointer;
@@ -53,6 +53,16 @@
     justify-content: space-evenly;
     flex-direction: column;
     margin-bottom: 10px;
+}
+
+.message-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    max-width: 90%;
+    text-align: center;
 }
 
 @media screen and (max-width: 992px) {

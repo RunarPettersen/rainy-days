@@ -1,4 +1,4 @@
-import { setupLoader } from './loader.js';
+import { setupLoader } from './assets/loader.js';
 
 setupLoader();
 
@@ -8,17 +8,15 @@ let receiptTotalPrice = document.querySelector('.totalPrice');
 let receiptShippingCost = document.querySelector('.shippingCost');
 let receiptFinalTotal = document.querySelector('.finalTotal');
 
-// Function to display the receipt on the confirmation page
 const displayReceipt = () => {
-    // Retrieve the receipt and shipping info from localStorage
     const receipt = JSON.parse(localStorage.getItem('receipt')) || [];
     const shippingCost = parseFloat(localStorage.getItem('shippingCost')) || 0.00;
-    console.log('Receipt:', receipt); // Log the receipt to check its content
+    console.log('Receipt:', receipt);
     let totalQuantity = 0;
     let totalPrice = 0;
 
     if (receipt.length > 0) {
-        receiptList.innerHTML = ''; // Clear the receipt list
+        receiptList.innerHTML = '';
 
         receipt.forEach(item => {
             totalQuantity += item.quantity;

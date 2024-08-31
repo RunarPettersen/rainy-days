@@ -1,7 +1,10 @@
-import { addCartToHTML, changeQuantityCart } from './cart.js';
-import { setupLoader } from './loader.js';
+import { addCartToHTML, changeQuantityCart } from './assets/cart.js';
+import { setupLoader } from './assets/loader.js';
+import { displayMessage } from './assets/message.js';
+import { setActiveLink } from './assets/menu.js';
 
 setupLoader();
+setActiveLink();
 
 let listProductHTML = document.querySelector('.listProduct');
 let listCartHTML = document.querySelector('.listCart');
@@ -40,7 +43,6 @@ const getRandomProduct = () => {
     return products[randomIndex];
 };
 
-// Function to add a product to the cart
 const addProductToCart = (productId, size = 'Undefined') => {
     let positionThisProductInCart = cart.findIndex((value) => value.product_id == productId && value.size == size);
     if (positionThisProductInCart < 0) {
@@ -52,11 +54,18 @@ const addProductToCart = (productId, size = 'Undefined') => {
     } else {
         cart[positionThisProductInCart].quantity += 1;
     }
-    addCartToHTML(cart, products, listCartHTML, iconCartSpan); // Call with correct parameters
+    addCartToHTML(cart, products, listCartHTML, iconCartSpan);
     addCartToMemory();
+    triggerShakeAnimation(iconCart);
 };
 
-// Function to update the random product section
+const triggerShakeAnimation = (element) => {
+    element.classList.add('shake');
+    setTimeout(() => {
+        element.classList.remove('shake');
+    }, 500);
+};
+
 const updateDetailWithRandomProduct = () => {
     const thisProduct = getRandomProduct();
 
@@ -130,7 +139,6 @@ const setupPopularProductsListeners = () => {
     });
 };
 
-// Function to render the "Popular Products Now" section
 const addDataToHTML = () => {
     if (products.length > 0) {
         listProductHTML.innerHTML = '';
@@ -179,14 +187,12 @@ const addDataToHTML = () => {
             listProductHTML.appendChild(newProduct);
         });
 
-        // Setup listeners for "Add to Cart" buttons in the "Popular Products Now" section
         setupPopularProductsListeners();
     } else {
         console.error('No products available');
     }
 };
 
-// Function to store cart in localStorage
 const addCartToMemory = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
 };
@@ -194,10 +200,13 @@ const addCartToMemory = () => {
 const initApp = async () => {
     try {
         const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
+        if (!response.ok) {
+            throw new Error('Failed to fetch products. Please try again later.');
+        }
         const data = await response.json();
         products = data;
-        addDataToHTML(); // Render popular products
-        updateDetailWithRandomProduct(); // Update random product section
+        addDataToHTML();
+        updateDetailWithRandomProduct();
 
         const storedCart = localStorage.getItem('cart');
         if (storedCart) {
@@ -206,6 +215,7 @@ const initApp = async () => {
         }
     } catch (error) {
         console.error('Error fetching products:', error);
+        displayMessage('Failed to load products. Please check your internet connection and try again.', 'error');
     }
 };
 

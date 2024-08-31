@@ -89,22 +89,19 @@ export const addCartToHTML = (cart, products, listCartHTML, iconCartSpan) => {
 };
 
 const setupCartEventListeners = (cart, products, listCartHTML, iconCartSpan) => {
-    // Use a flag to ensure listeners are not duplicated
     if (!listCartHTML.listenerAttached) {
         listCartHTML.addEventListener('click', (event) => {
             const positionClick = event.target;
 
             if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
-                const product_id = positionClick.closest('.item').dataset.id; // Get product ID from closest item div
-                const size = positionClick.closest('.item').dataset.size; // Get size from closest item div
+                const product_id = positionClick.closest('.item').dataset.id;
+                const size = positionClick.closest('.item').dataset.size;
                 let type = positionClick.classList.contains('plus') ? 'plus' : 'minus';
 
-                // Call the function to change the quantity
                 changeQuantityCart(product_id, size, type, cart, products, listCartHTML, iconCartSpan);
             }
         });
 
-        // Set flag to true to prevent reattaching listeners
         listCartHTML.listenerAttached = true;
     }
 };
@@ -114,16 +111,15 @@ export const changeQuantityCart = (product_id, size, type, cart, products, listC
     if (positionItemInCart >= 0) {
         let item = cart[positionItemInCart];
         if (type === 'plus') {
-            item.quantity += 1; // Increase the quantity by one
+            item.quantity += 1;
         } else if (type === 'minus') {
-            item.quantity -= 1; // Decrease the quantity by one
+            item.quantity -= 1;
             if (item.quantity <= 0) {
-                cart.splice(positionItemInCart, 1); // Remove the item if quantity is 0 or less
+                cart.splice(positionItemInCart, 1);
             }
         }
     }
 
-    // Update the cart display and save changes
     addCartToHTML(cart, products, listCartHTML, iconCartSpan);
-    localStorage.setItem('cart', JSON.stringify(cart)); // Save cart to local storage
+    localStorage.setItem('cart', JSON.stringify(cart));
 };

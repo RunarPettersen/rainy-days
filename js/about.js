@@ -1,7 +1,9 @@
-import { addCartToHTML, changeQuantityCart } from './cart.js';
-import { setupLoader } from './loader.js';
+import { addCartToHTML, changeQuantityCart } from './assets/cart.js';
+import { setupLoader } from './assets/loader.js';
+import { setActiveLink } from './assets/menu.js';
 
 setupLoader();
+setActiveLink();
 
 let listProductHTML = document.querySelector('.listProduct');
 let listCartHTML = document.querySelector('.listCart');
@@ -13,7 +15,6 @@ let detail = document.querySelector('.main-heading');
 let products = [];
 let cart = [];
 
-// Event listeners for cart toggling
 if (iconCart) {
     iconCart.addEventListener('click', () => {
         body.classList.toggle('showCart');
@@ -30,31 +31,10 @@ if (closeCart) {
     console.error('closeCart element not found');
 }
 
-// Function to add a product to the cart
-const addToCart = (product_id, size) => {
-    if (!size) {
-        size = 'Undefined';
-    }
-    let positionThisProductInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
-    if (positionThisProductInCart < 0) {
-        cart.push({
-            product_id: product_id,
-            size: size,
-            quantity: 1
-        });
-    } else {
-        cart[positionThisProductInCart].quantity += 1;
-    }
-    addCartToHTML(cart, products, listCartHTML, iconCartSpan); // Call the imported function
-    addCartToMemory();
-};
-
-// Function to save cart to localStorage
 const addCartToMemory = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
 };
 
-// Initialize the application and fetch products
 const initApp = async () => {
     try {
         const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
@@ -62,11 +42,10 @@ const initApp = async () => {
         products = data;
         console.log('Products fetched:', products);
 
-        // Retrieve the cart from local storage
         const storedCart = localStorage.getItem('cart');
         if (storedCart) {
             cart = JSON.parse(storedCart);
-            addCartToHTML(cart, products, listCartHTML, iconCartSpan); // Use the imported function
+            addCartToHTML(cart, products, listCartHTML, iconCartSpan);
         }
     } catch (error) {
         alert('Error fetching products:', error);

@@ -102,7 +102,7 @@ header .icon-cart span {
     background-color: var(--darkgreen);
     color: #fff;
     padding: 5px 10px;
-    border-radius: 20px;
+    border-radius: 5px;
     margin-top: 10px;
     border: none;
     cursor: pointer;
@@ -136,7 +136,7 @@ header .icon-cart span {
     background-color: var(--darkgreen);
     color: #fff;
     padding: 5px 10px;
-    border-radius: 20px;
+    border-radius: 5px;
     margin-top: 10px;
     border: none;
     cursor: pointer;
@@ -145,6 +145,7 @@ header .icon-cart span {
 .sizeSelector {
     padding: 4px;
     margin-right: 5px;
+    border-radius: 5px;
 }
 
 .cartTab {
@@ -173,6 +174,16 @@ body.showCart .container, body.showCart header {
     text-align: left;
     margin-top: 50px;
     font-style: italic;
+}
+
+@keyframes shake {
+    0%, 100% { transform: skewX(0); }
+    20%, 60% { transform: skewX(35deg); }
+    40%, 80% { transform: skewx(-0.06turn); }
+}
+
+.icon-cart.shake {
+    animation: shake 0.5s;
 }
 
 .cartTab {
@@ -404,6 +415,10 @@ footer svg {
     margin: auto;
 }
 
+.menu-line a.active {
+    color: #115d70;
+}
+
 .loader {
     position: fixed;
     top: 0;
@@ -430,6 +445,26 @@ footer svg {
     border-top-color: #477286;
     border-radius: 50%;
     animation: loading 0.75s ease infinite;
+}
+
+.message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    background-color: #d1e7dd; /* Default background color */
+    color: #0f5132; /* Default text color */
+    border: 1px solid #badbcc;
+    border-radius: 4px;
+    z-index: 1000;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.message.error {
+    background-color: #f8d7da; /* Error background color */
+    color: #721c24; /* Error text color */
+    border-color: #f5c6cb;
 }
 
 @keyframes loading {

@@ -1,7 +1,10 @@
-import { addCartToHTML, changeQuantityCart } from './cart.js';
-import { setupLoader } from './loader.js';
+import { addCartToHTML, changeQuantityCart } from './assets/cart.js';
+import { setupLoader } from './assets/loader.js';
+import { displayMessage } from './assets/message.js';
+import { setActiveLink } from './assets/menu.js';
 
 setupLoader();
+setActiveLink();
 
 let myProductHTML = document.querySelector('.myProduct');
 let listCartHTML = document.querySelector('.listCart');
@@ -17,7 +20,6 @@ let genderFilterSelect = document.querySelector('#genderFilter');
 let products = [];
 let cart = [];
 
-// Event listeners for cart toggling
 iconCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
 });
@@ -26,35 +28,29 @@ closeCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
 });
 
-// Event listener for sorting by price
 sortPriceSelect.addEventListener('change', () => {
     sortProductsByPrice(sortPriceSelect.value);
     addDataToHTML();
 });
 
-// Event listener for filtering by gender
 genderFilterSelect.addEventListener('change', () => {
     addDataToHTML();
 });
 
-// Fetch the product ID from the URL
 const getProductIdFromURL = () => {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('id');
 };
 
-// Sort products by price
 const sortProductsByPrice = (order) => {
     products.sort((a, b) => (order === 'asc' ? a.price - b.price : b.price - a.price));
 };
 
-// Render products to the HTML
 const addDataToHTML = () => {
     const productId = getProductIdFromURL();
     const selectedGender = genderFilterSelect.value;
 
     if (productId) {
-        // Hide unnecessary elements when showing a single product
         productListTitle.style.display = 'none';
         myProductHTML.style.display = 'none';
         sortPriceSelect.style.display = 'none';
@@ -123,7 +119,6 @@ myProductHTML.addEventListener('click', (event) => {
     }
 });
 
-// Add product to cart
 const addToCart = (product_id, size) => {
     if (!size) {
         size = 'Undefined';
@@ -138,19 +133,28 @@ const addToCart = (product_id, size) => {
     } else {
         cart[positionThisProductInCart].quantity += 1;
     }
-    addCartToHTML(cart, products, listCartHTML, iconCartSpan); // Correctly call imported function
+    addCartToHTML(cart, products, listCartHTML, iconCartSpan);
     addCartToMemory();
+    triggerShakeAnimation(iconCart);
 };
 
-// Store cart in localStorage
 const addCartToMemory = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
 };
 
-// Initialize the application and fetch products
+const triggerShakeAnimation = (element) => {
+    element.classList.add('shake');
+    setTimeout(() => {
+        element.classList.remove('shake');
+    }, 500);
+};
+
 const initApp = async () => {
     try {
         const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
+        if (!response.ok) {
+            throw new Error('Failed to fetch products. Please try again later.');
+        }
         const data = await response.json();
         products = data;
         addDataToHTML();
@@ -158,10 +162,11 @@ const initApp = async () => {
         const storedCart = localStorage.getItem('cart');
         if (storedCart) {
             cart = JSON.parse(storedCart);
-            addCartToHTML(cart, products, listCartHTML, iconCartSpan); // Correctly call imported function
+            addCartToHTML(cart, products, listCartHTML, iconCartSpan);
         }
     } catch (error) {
         console.error('Error fetching products:', error);
+        displayMessage('Failed to load products. Please check your internet connection and try again.', 'error');
     }
 };
 
