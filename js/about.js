@@ -1,39 +1,16 @@
 import { addCartToHTML, changeQuantityCart } from './assets/cart.js';
 import { setupLoader } from './assets/loader.js';
 import { setActiveLink } from './assets/menu.js';
+import { setupCartIcon } from './assets/cartIcon.js';
 
 setupLoader();
 setActiveLink();
+setupCartIcon();
 
-let listProductHTML = document.querySelector('.listProduct');
 let listCartHTML = document.querySelector('.listCart');
-let iconCart = document.querySelector('.icon-cart');
 let iconCartSpan = document.querySelector('.icon-cart span');
-let body = document.querySelector('body');
-let closeCart = document.querySelector('.close');
-let detail = document.querySelector('.main-heading');
 let products = [];
 let cart = [];
-
-if (iconCart) {
-    iconCart.addEventListener('click', () => {
-        body.classList.toggle('showCart');
-    });
-} else {
-    console.error('iconCart element not found');
-}
-
-if (closeCart) {
-    closeCart.addEventListener('click', () => {
-        body.classList.toggle('showCart');
-    });
-} else {
-    console.error('closeCart element not found');
-}
-
-const addCartToMemory = () => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-};
 
 const initApp = async () => {
     try {

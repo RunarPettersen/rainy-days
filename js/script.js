@@ -2,38 +2,20 @@ import { addCartToHTML, changeQuantityCart } from './assets/cart.js';
 import { setupLoader } from './assets/loader.js';
 import { displayMessage } from './assets/message.js';
 import { setActiveLink } from './assets/menu.js';
+import { setupCartIcon } from './assets/cartIcon.js';
 
 setupLoader();
 setActiveLink();
+setupCartIcon();
 
 let listProductHTML = document.querySelector('.listProduct');
 let listCartHTML = document.querySelector('.listCart');
 let iconCart = document.querySelector('.icon-cart');
 let iconCartSpan = document.querySelector('.icon-cart span');
-let body = document.querySelector('body');
-let closeCart = document.querySelector('.close');
 let detail = document.querySelector('.main-heading');
 let products = [];
 let cart = [];
 
-// Event listeners for cart toggle
-if (iconCart) {
-    iconCart.addEventListener('click', () => {
-        body.classList.toggle('showCart');
-    });
-} else {
-    console.error('iconCart element not found');
-}
-
-if (closeCart) {
-    closeCart.addEventListener('click', () => {
-        body.classList.toggle('showCart');
-    });
-} else {
-    console.error('closeCart element not found');
-}
-
-// Function to get a random product from the products array
 const getRandomProduct = () => {
     if (products.length === 0) {
         console.error('No products available to select randomly.');
@@ -87,10 +69,8 @@ const updateDetailWithRandomProduct = () => {
     mainImageContainer.innerHTML = '';
     mainImageContainer.appendChild(anchor);
 
-    // Generate a unique suffix for the id
     const uniqueSuffix = `${thisProduct.id}-${Date.now()}`;
 
-    // Adding id attributes for title, price, and description
     const titleElement = detail.querySelector('.main-title h1');
     titleElement.id = `product-title-${uniqueSuffix}`;
     titleElement.innerText = thisProduct.title;
@@ -103,12 +83,10 @@ const updateDetailWithRandomProduct = () => {
     descriptionElement.id = `product-description-${uniqueSuffix}`;
     descriptionElement.innerText = thisProduct.description;
 
-    // Select size selector and ensure it has both an id and a name attribute
     const sizeSelector = detail.querySelector('.sizeSelector');
-    sizeSelector.id = `sizeSelector-${uniqueSuffix}`;   // Ensure unique ID
-    sizeSelector.name = `size-${thisProduct.id}`;       // Ensure unique name
+    sizeSelector.id = `sizeSelector-${uniqueSuffix}`;
+    sizeSelector.name = `size-${thisProduct.id}`;
 
-    // Populate the size options
     sizeSelector.innerHTML = thisProduct.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
 
     const addCartButton = detail.querySelector('.addCart');
@@ -126,7 +104,6 @@ const updateDetailWithRandomProduct = () => {
     addCartButton._addToCartHandler = newAddToCartHandler;
 };
 
-// Function to add event listeners to "Add to Cart" buttons in the "Popular Products Now" section
 const setupPopularProductsListeners = () => {
     const addCartButtons = document.querySelectorAll('.listProduct .addCart');
     

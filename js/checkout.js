@@ -1,16 +1,15 @@
 import { addCartToHTML, changeQuantityCart } from './assets/cart.js';
 import { setupLoader } from './assets/loader.js';
 import { displayMessage } from './assets/message.js';
+import { setupCartIcon } from './assets/cartIcon.js';
 
 setupLoader();
+setupCartIcon();
 
 let listProductHTML = document.querySelector('.listProduct');
 let listCartHTML = document.querySelector('.listCart');
 let iconCart = document.querySelector('.icon-cart');
 let iconCartSpan = document.querySelector('.icon-cart span');
-let body = document.querySelector('body');
-let closeCart = document.querySelector('.close');
-let detail = document.querySelector('.main-heading');
 let checkoutList = document.querySelector('.list');
 let checkoutTotalQuantity = document.querySelector('.totalQuantity');
 let checkoutTotalPrice = document.querySelector('.totalPrice');
@@ -21,37 +20,58 @@ let placeOrderButton = document.getElementById('placeOrder');
 let products = [];
 let cart = [];
 
-if (iconCart) {
-    iconCart.addEventListener('click', () => {
-        body.classList.toggle('showCart');
-    });
-}
-
-if (closeCart) {
-    closeCart.addEventListener('click', () => {
-        body.classList.toggle('showCart');
-    });
-}
-
 const addDataToHTML = () => {
     if (products.length > 0 && listProductHTML) {
         listProductHTML.innerHTML = '';
         const productsToShow = products.slice(0, 8);
+
         productsToShow.forEach(product => {
             let newProduct = document.createElement('div');
             newProduct.dataset.id = product.id;
             newProduct.classList.add('item');
-            let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
-            newProduct.innerHTML =
-                `<a href="../product/index.html?id=${product.id}"><img src="${product.image}" alt="${product.title}"></a>
-                <h2>${product.title}</h2>
-                <div class="price">$${product.price}</div>
-                <select class="sizeSelector" id="${product.title}" name="${product.title}">${sizesOptions}</select>
-                <button class="addCart">Add To Cart</button>`;
+
+            let anchor = document.createElement('a');
+            anchor.href = `../product/index.html?id=${product.id}`;
+
+            let img = document.createElement('img');
+            img.src = product.image;
+            img.alt = product.title;
+
+            anchor.appendChild(img);
+
+            let title = document.createElement('h2');
+            title.textContent = product.title;
+
+            let price = document.createElement('div');
+            price.classList.add('price');
+            price.textContent = `$${product.price}`;
+
+            let select = document.createElement('select');
+            select.classList.add('sizeSelector');
+            select.id = product.title;
+            select.name = product.title;
+
+            product.sizes.forEach(size => {
+                let option = document.createElement('option');
+                option.value = size;
+                option.textContent = size;
+                select.appendChild(option);
+            });
+
+            let button = document.createElement('button');
+            button.classList.add('addCart');
+            button.textContent = 'Add To Cart';
+
+            newProduct.appendChild(anchor);
+            newProduct.appendChild(title);
+            newProduct.appendChild(price);
+            newProduct.appendChild(select);
+            newProduct.appendChild(button);
+
             listProductHTML.appendChild(newProduct);
         });
     } else {
-        console.error('listProductHTML element not found');
+        console.error('listProductHTML element not found or no products available');
     }
 };
 
@@ -64,8 +84,6 @@ if (listProductHTML) {
             addToCart(id_product, size);
         }
     });
-} else {
-    console.error('listProductHTML element not found');
 }
 
 const addToCart = (product_id, size) => {

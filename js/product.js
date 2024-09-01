@@ -2,16 +2,16 @@ import { addCartToHTML, changeQuantityCart } from './assets/cart.js';
 import { setupLoader } from './assets/loader.js';
 import { displayMessage } from './assets/message.js';
 import { setActiveLink } from './assets/menu.js';
+import { setupCartIcon } from './assets/cartIcon.js';
 
 setupLoader();
 setActiveLink();
+setupCartIcon();
 
 let myProductHTML = document.querySelector('.myProduct');
 let listCartHTML = document.querySelector('.listCart');
 let iconCart = document.querySelector('.icon-cart');
 let iconCartSpan = document.querySelector('.icon-cart span');
-let body = document.querySelector('body');
-let closeCart = document.querySelector('.close');
 let productListTitle = document.querySelector('.title');
 let sortPriceSelect = document.querySelector('#sortPrice');
 let sortPriceTitle = document.querySelector('.sorting-controls');
@@ -19,14 +19,6 @@ let genderControls = document.querySelector('.gender-controls');
 let genderFilterSelect = document.querySelector('#genderFilter');
 let products = [];
 let cart = [];
-
-iconCart.addEventListener('click', () => {
-    body.classList.toggle('showCart');
-});
-
-closeCart.addEventListener('click', () => {
-    body.classList.toggle('showCart');
-});
 
 sortPriceSelect.addEventListener('change', () => {
     sortProductsByPrice(sortPriceSelect.value);
@@ -60,23 +52,60 @@ const addDataToHTML = () => {
 
         const product = products.find(product => product.id == productId);
         if (product) {
-            let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
-            let productDetail = document.createElement('div');
+            const productDetail = document.createElement('div');
             productDetail.classList.add('item');
-            productDetail.innerHTML = `
-                <img src="${product.image}" alt="${product.title}">
-                <h2>${product.title}</h2>
-                <div class="description">${product.description}</div>
-                <div class="gender">Gender: ${product.gender}</div>
-                <div class="gender">Color: ${product.baseColor}</div>
-                <div class="price">$${product.price}</div>
-                <select class="sizeSelector" id="${product.title}" name="${product.title}">${sizesOptions}</select>
-                <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
+
+            const img = document.createElement('img');
+            img.src = product.image;
+            img.alt = product.title;
+            productDetail.appendChild(img);
+
+            const title = document.createElement('h2');
+            title.textContent = product.title;
+            productDetail.appendChild(title);
+
+            const description = document.createElement('div');
+            description.classList.add('description');
+            description.textContent = product.description;
+            productDetail.appendChild(description);
+
+            const gender = document.createElement('div');
+            gender.classList.add('gender');
+            gender.textContent = `Gender: ${product.gender}`;
+            productDetail.appendChild(gender);
+
+            const color = document.createElement('div');
+            color.classList.add('gender');
+            color.textContent = `Color: ${product.baseColor}`;
+            productDetail.appendChild(color);
+
+            const price = document.createElement('div');
+            price.classList.add('price');
+            price.textContent = `$${product.price}`;
+            productDetail.appendChild(price);
+
+            const select = document.createElement('select');
+            select.classList.add('sizeSelector');
+            select.id = product.title;
+            select.name = product.title;
+            product.sizes.forEach(size => {
+                const option = document.createElement('option');
+                option.value = size;
+                option.textContent = size;
+                select.appendChild(option);
+            });
+            productDetail.appendChild(select);
+
+            const button = document.createElement('button');
+            button.classList.add('addCart');
+            button.dataset.id = product.id;
+            button.textContent = 'Add To Cart';
+            productDetail.appendChild(button);
+
             myProductHTML.appendChild(productDetail);
             myProductHTML.style.display = 'block';
         }
     } else {
-        // Filter products based on gender selection
         let filteredProducts = products;
         if (selectedGender !== 'all') {
             filteredProducts = products.filter(product => product.gender.toLowerCase() === selectedGender);
@@ -85,31 +114,63 @@ const addDataToHTML = () => {
         if (filteredProducts.length > 1) {
             productListTitle.style.display = 'block';
             myProductHTML.innerHTML = '';
-            sortPriceSelect.style.display = 'block'; // Show price sorter
+            sortPriceSelect.style.display = 'block';
 
             filteredProducts.forEach(product => {
-                let newProduct = document.createElement('div');
+                const newProduct = document.createElement('div');
                 newProduct.dataset.id = product.id;
                 newProduct.classList.add('item');
-                let sizesOptions = product.sizes.map(size => `<option value="${size}">${size}</option>`).join('');
-                newProduct.innerHTML = `
-                    <a href="index.html?id=${product.id}"><img src="${product.image}" alt="${product.title}"></a>
-                    <h2>${product.title}</h2>
-                    <div class="description">${product.description}</div>
-                    <div class="price">$${product.price}</div>
-                    <select class="sizeSelector" id="${product.title}" name="${product.title}">${sizesOptions}</select>
-                    <button class="addCart" data-id="${product.id}">Add To Cart</button>`;
+
+                const anchor = document.createElement('a');
+                anchor.href = `index.html?id=${product.id}`;
+                const img = document.createElement('img');
+                img.src = product.image;
+                img.alt = product.title;
+                anchor.appendChild(img);
+                newProduct.appendChild(anchor);
+
+                const title = document.createElement('h2');
+                title.textContent = product.title;
+                newProduct.appendChild(title);
+
+                const description = document.createElement('div');
+                description.classList.add('description');
+                description.textContent = product.description;
+                newProduct.appendChild(description);
+
+                const price = document.createElement('div');
+                price.classList.add('price');
+                price.textContent = `$${product.price}`;
+                newProduct.appendChild(price);
+
+                const select = document.createElement('select');
+                select.classList.add('sizeSelector');
+                select.id = product.title;
+                select.name = product.title;
+                product.sizes.forEach(size => {
+                    const option = document.createElement('option');
+                    option.value = size;
+                    option.textContent = size;
+                    select.appendChild(option);
+                });
+                newProduct.appendChild(select);
+
+                const button = document.createElement('button');
+                button.classList.add('addCart');
+                button.dataset.id = product.id;
+                button.textContent = 'Add To Cart';
+                newProduct.appendChild(button);
+
                 myProductHTML.appendChild(newProduct);
             });
         } else {
             productListTitle.style.display = 'none';
             myProductHTML.style.display = 'none';
-            sortPriceSelect.style.display = 'none'; // Hide price sorter
+            sortPriceSelect.style.display = 'none';
         }
     }
 };
 
-// Listener for add to cart button clicks
 myProductHTML.addEventListener('click', (event) => {
     let positionClick = event.target;
     if (positionClick.classList.contains('addCart')) {
