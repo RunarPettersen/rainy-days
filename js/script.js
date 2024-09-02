@@ -39,6 +39,7 @@ const addProductToCart = (productId, size = 'Undefined') => {
     addCartToHTML(cart, products, listCartHTML, iconCartSpan);
     addCartToMemory();
     triggerShakeAnimation(iconCart);
+    displayMessage('Item added to cart', 'success');
 };
 
 const triggerShakeAnimation = (element) => {

@@ -197,6 +197,7 @@ const addToCart = (product_id, size) => {
     addCartToHTML(cart, products, listCartHTML, iconCartSpan);
     addCartToMemory();
     triggerShakeAnimation(iconCart);
+    displayMessage('Item added to cart', 'success');
 };
 
 const addCartToMemory = () => {
