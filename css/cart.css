@@ -67,14 +67,6 @@
     padding-top: 10px;
 }
 
-.cartTab .listCart .item {
-    display: grid;
-    grid-template-columns: 70px 140px 50px 50px 1fr;
-    gap: 10px;
-    text-align: center;
-    align-items: center;
-}
-
 .listCart .quantity span {
     display: inline-block;
     width: 25px;
@@ -94,7 +86,10 @@
 }
 
 .cart-item {
-    display: flex;
+    display: grid;
+    grid-template-columns: 50px 155px 45px 50px 1fr;
+    gap: 10px;
+    text-align: center;
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #ddd;

@@ -1,5 +1,5 @@
 export const renderProductDetail = (product, container, addToCartCallback) => {
-    container.innerHTML = ''; // Clear existing content
+    container.innerHTML = '';
 
     const productDetail = document.createElement('div');
     productDetail.classList.add('item');
@@ -50,10 +50,8 @@ export const renderProductDetail = (product, container, addToCartCallback) => {
     button.dataset.id = product.id;
     button.textContent = 'Add To Cart';
 
-    // Correctly add event listener
     button.addEventListener('click', () => {
         const selectedSize = select.value;
-        console.log(`Button clicked for product ID=${product.id}, Size=${selectedSize}`); // Debugging line
         addToCartCallback(product.id, selectedSize);
     });
 
@@ -63,7 +61,7 @@ export const renderProductDetail = (product, container, addToCartCallback) => {
 };
 
 export const renderProductList = (products, container, addToCartCallback) => {
-    container.innerHTML = ''; // Clear existing content
+    container.innerHTML = '';
 
     products.forEach(product => {
         const newProduct = document.createElement('div');
@@ -109,10 +107,8 @@ export const renderProductList = (products, container, addToCartCallback) => {
         button.dataset.id = product.id;
         button.textContent = 'Add To Cart';
 
-        // Correctly add event listener using the provided callback
         button.addEventListener('click', () => {
             const selectedSize = select.value;
-            console.log(`Button clicked for product ID=${product.id}, Size=${selectedSize}`); // Debugging line
             addToCartCallback(product.id, selectedSize);
         });
 

@@ -1,10 +1,11 @@
-import { addCartToHTML, changeQuantityCart } from './utils/cart.js';
+import { addCartToHTML  } from './utils/cart.js';
 import { updateDetailWithRandomProduct } from './utils/randomProduct.js';
 import { setupLoader } from './utils/loader.js';
 import { displayMessage } from './utils/message.js';
 import { setActiveLink } from './utils/menu.js';
 import { setupCartIcon, triggerShakeAnimation } from './utils/cartIcon.js';
 import { addDataToHTML } from './utils/addDataToHTML.js';
+import { baseurl } from './constants/api.js';
 
 setupLoader();
 setActiveLink();
@@ -50,7 +51,7 @@ const addCartToMemory = () => {
 
 const initApp = async () => {
     try {
-        const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
+        const response = await fetch(baseurl);
         if (!response.ok) {
             throw new Error('Failed to fetch products. Please try again later.');
         }

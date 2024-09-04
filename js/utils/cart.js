@@ -1,6 +1,7 @@
 export const addCartToHTML = (cart, products, listCartHTML, iconCartSpan) => {
-    listCartHTML.innerHTML = ''; // Clear the current cart display
+    listCartHTML.innerHTML = '';
     let totalQuantity = 0;
+    let totalPrice = 0;
 
     if (cart.length > 0) {
         cart.forEach(item => {
@@ -17,33 +18,33 @@ export const addCartToHTML = (cart, products, listCartHTML, iconCartSpan) => {
             const img = document.createElement('img');
             img.src = product.image;
             img.alt = product.title;
-            img.classList.add('cart-item-image'); // Add appropriate CSS class
+            img.classList.add('cart-item-image');
 
             const title = document.createElement('div');
             title.textContent = product.title;
-            title.classList.add('cart-item-title'); // Add appropriate CSS class
+            title.classList.add('cart-item-title');
 
             const size = document.createElement('div');
             size.textContent = `Size: ${item.size}`;
-            size.classList.add('cart-item-size'); // Add appropriate CSS class
+            size.classList.add('cart-item-size');
 
             const quantity = document.createElement('div');
-            quantity.classList.add('cart-item-quantity'); // Add appropriate CSS class
+            quantity.classList.add('cart-item-quantity');
 
             const minusButton = document.createElement('button');
             minusButton.textContent = '-';
-            minusButton.classList.add('minus', 'quantity-button'); // Add appropriate CSS classes
+            minusButton.classList.add('minus', 'quantity-button');
             minusButton.addEventListener('click', () => {
                 changeQuantityCart(item.product_id, item.size, 'minus', cart, products, listCartHTML, iconCartSpan);
             });
 
             const quantityText = document.createElement('span');
             quantityText.textContent = item.quantity;
-            quantityText.classList.add('quantity-text'); // Add appropriate CSS class
+            quantityText.classList.add('quantity-text');
 
             const plusButton = document.createElement('button');
             plusButton.textContent = '+';
-            plusButton.classList.add('plus', 'quantity-button'); // Add appropriate CSS classes
+            plusButton.classList.add('plus', 'quantity-button');
             plusButton.addEventListener('click', () => {
                 changeQuantityCart(item.product_id, item.size, 'plus', cart, products, listCartHTML, iconCartSpan);
             });
@@ -52,9 +53,12 @@ export const addCartToHTML = (cart, products, listCartHTML, iconCartSpan) => {
             quantity.appendChild(quantityText);
             quantity.appendChild(plusButton);
 
+            const itemTotalPrice = product.price * item.quantity;
+            totalPrice += itemTotalPrice;
+
             const price = document.createElement('div');
-            price.textContent = `$${(product.price * item.quantity).toFixed(2)}`;
-            price.classList.add('cart-item-price'); // Add appropriate CSS class
+            price.textContent = `$${itemTotalPrice.toFixed(2)}`;
+            price.classList.add('cart-item-price');
 
             cartItem.appendChild(img);
             cartItem.appendChild(title);
@@ -65,29 +69,15 @@ export const addCartToHTML = (cart, products, listCartHTML, iconCartSpan) => {
             listCartHTML.appendChild(cartItem);
         });
 
-        // Update cart icon quantity
         iconCartSpan.textContent = totalQuantity;
+
+        const totalDiv = document.createElement('div');
+        totalDiv.classList.add('total');
+        totalDiv.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
+        listCartHTML.appendChild(totalDiv);
     } else {
         listCartHTML.innerHTML = '<div class="empty-cart-message">Your cart is empty</div>';
         iconCartSpan.textContent = 0;
-    }
-};
-
-const setupCartEventListeners = (cart, products, listCartHTML, iconCartSpan) => {
-    if (!listCartHTML.listenerAttached) {
-        listCartHTML.addEventListener('click', (event) => {
-            const positionClick = event.target;
-
-            if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
-                const product_id = positionClick.closest('.item').dataset.id;
-                const size = positionClick.closest('.item').dataset.size;
-                let type = positionClick.classList.contains('plus') ? 'plus' : 'minus';
-
-                changeQuantityCart(product_id, size, type, cart, products, listCartHTML, iconCartSpan);
-            }
-        });
-
-        listCartHTML.listenerAttached = true;
     }
 };
 

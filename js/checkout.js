@@ -1,11 +1,12 @@
 import { addCartToHTML } from './utils/cart.js';
 import { setupLoader } from './utils/loader.js';
 import { displayMessage } from './utils/message.js';
-import { setupCartIcon, triggerShakeAnimation } from './utils/cartIcon.js';
+import { setupCartIcon } from './utils/cartIcon.js';
 import { addDataToHTML } from './utils/addDataToHTML.js';
 import { updateCheckoutPage } from './utils/updateCheckoutPage.js';
-import { addToCart, removeFromCart, saveCartToMemory } from './utils/cartManager.js';
+import { addToCart, removeFromCart } from './utils/cartManager.js';
 import { calculateFinalTotal, placeOrder } from './utils/orderManager.js';
+import { baseurl } from './constants/api.js';
 
 setupLoader();
 setupCartIcon();
@@ -24,17 +25,6 @@ let placeOrderButton = document.getElementById('placeOrder');
 let products = [];
 let cart = [];
 
-if (listProductHTML) {
-    listProductHTML.addEventListener('click', (event) => {
-        let positionClick = event.target;
-        if (positionClick.classList.contains('addCart')) {
-            let id_product = positionClick.parentElement.dataset.id;
-            let size = positionClick.parentElement.querySelector('.sizeSelector').value;
-            cart = addToCart(cart, id_product, size, products, listCartHTML, iconCart, iconCartSpan);
-        }
-    });
-}
-
 if (checkoutShippingSelect) {
     checkoutShippingSelect.addEventListener('change', () => calculateFinalTotal(checkoutShippingSelect, checkoutShippingCost, checkoutFinalTotal, checkoutTotalPrice));
 }
@@ -45,7 +35,7 @@ if (placeOrderButton) {
 
 const initApp = async () => {
     try {
-        const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
+        const response = await fetch(baseurl);
         if (!response.ok) {
             throw new Error('Failed to fetch products. Please try again later.');
         }

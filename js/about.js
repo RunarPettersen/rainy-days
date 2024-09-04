@@ -1,7 +1,8 @@
-import { addCartToHTML, changeQuantityCart } from './utils/cart.js';
+import { addCartToHTML } from './utils/cart.js';
 import { setupLoader } from './utils/loader.js';
 import { setActiveLink } from './utils/menu.js';
 import { setupCartIcon } from './utils/cartIcon.js';
+import { baseurl } from './constants/api.js';
 
 setupLoader();
 setActiveLink();
@@ -14,7 +15,7 @@ let cart = [];
 
 const initApp = async () => {
     try {
-        const response = await fetch('https://api.noroff.dev/api/v1/rainy-days');
+        const response = await fetch(baseurl);
         const data = await response.json();
         products = data;
         console.log('Products fetched:', products);

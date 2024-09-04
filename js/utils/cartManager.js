@@ -3,10 +3,22 @@ import { triggerShakeAnimation } from './cartIcon.js';
 import { displayMessage } from './message.js';
 
 export const addToCart = (cart, product_id, size, products, listCartHTML, iconCart, iconCartSpan) => {
+    if (!Array.isArray(cart) || !Array.isArray(products)) {
+        console.error('Cart or products array is not defined correctly.');
+        return cart;
+    }
+
+    const product = products.find(p => p.id == product_id);
+    if (!product) {
+        console.error(`Product with ID ${product_id} not found.`);
+        return cart;
+    }
+
     if (!size) {
         size = 'Undefined';
     }
-    let positionThisProductInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
+
+    let positionThisProductInCart = cart.findIndex(value => value.product_id == product_id && value.size == size);
     if (positionThisProductInCart < 0) {
         cart.push({
             product_id: product_id,
@@ -16,33 +28,34 @@ export const addToCart = (cart, product_id, size, products, listCartHTML, iconCa
     } else {
         cart[positionThisProductInCart].quantity += 1;
     }
-    
-    console.log('Updated cart:', cart); // Debugging line
-    addCartToHTML(cart, products, listCartHTML, iconCartSpan); // Ensure this is called
+
+    addCartToHTML(cart, products, listCartHTML, iconCartSpan);
     saveCartToMemory(cart);
-    triggerShakeAnimation(iconCart);
+
+    if (iconCart) {
+        triggerShakeAnimation(iconCart);
+    }
     displayMessage('Item added to cart', 'success');
+
+    return cart;
 };
 
-// Function to remove a product from the cart
 export const removeFromCart = (cart, product_id, size) => {
     let positionItemInCart = cart.findIndex((value) => value.product_id == product_id && value.size == size);
     if (positionItemInCart >= 0) {
         cart.splice(positionItemInCart, 1);
     }
-    return cart; // Return the updated cart
+    return cart;
 };
 
 export const saveCartToMemory = (cart) => {
     try {
         localStorage.setItem('cart', JSON.stringify(cart));
-        console.log('Cart saved to local storage:', cart); // Optional: Debugging line
     } catch (error) {
         console.error('Error saving cart to local storage:', error);
     }
 };
 
-// UI Updates and Notification Actions
 export const updateCartUI = (cart, products, listCartHTML, iconCart, iconCartSpan) => {
     addCartToHTML(cart, products, listCartHTML, iconCartSpan);
     saveCartToMemory(cart);

@@ -1,5 +1,5 @@
-import { saveCartToMemory } from './cartManager.js'; // Import saveCartToMemory
-import { addCartToHTML } from './cart.js'; // Import addCartToHTML if not already imported
+import { saveCartToMemory } from './cartManager.js';
+import { addCartToHTML } from './cart.js';
 
 export const updateCheckoutPage = (cart, products, checkoutList, checkoutTotalQuantity, checkoutTotalPrice, calculateFinalTotal, removeFromCart, checkoutShippingSelect, checkoutShippingCost, checkoutFinalTotal, listCartHTML, iconCartSpan) => {
     if (checkoutList) {
@@ -61,13 +61,10 @@ export const updateCheckoutPage = (cart, products, checkoutList, checkoutTotalQu
                 removeButton.classList.add('removeItem');
                 removeButton.textContent = 'Remove';
 
-                // Add event listener to remove button
                 removeButton.addEventListener('click', () => {
-                    // Remove item from cart
                     cart = removeFromCart(cart, item.product_id, item.size);
-                    // Update UI and local storage
-                    saveCartToMemory(cart); // Save the updated cart to memory
-                    addCartToHTML(cart, products, listCartHTML, iconCartSpan); // Update cart display
+                    saveCartToMemory(cart);
+                    addCartToHTML(cart, products, listCartHTML, iconCartSpan);
                     updateCheckoutPage(cart, products, checkoutList, checkoutTotalQuantity, checkoutTotalPrice, calculateFinalTotal, removeFromCart, checkoutShippingSelect, checkoutShippingCost, checkoutFinalTotal, listCartHTML, iconCartSpan);
                 });
 
@@ -91,7 +88,6 @@ export const updateCheckoutPage = (cart, products, checkoutList, checkoutTotalQu
                 checkoutTotalPrice.innerText = `$${totalPrice.toFixed(2)}`;
             }
 
-            // Recalculate the final total with shipping
             calculateFinalTotal(checkoutShippingSelect, checkoutShippingCost, checkoutFinalTotal, checkoutTotalPrice);
 
         } else {

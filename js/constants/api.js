@@ -1,0 +1,1 @@
+export const baseurl = "https://api.noroff.dev/api/v1/rainy-days";
