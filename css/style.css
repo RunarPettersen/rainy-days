@@ -2,7 +2,7 @@
 @import "./variables.css";
 
 body {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--primary-font);
     margin: 0;
     background-color: var(--background-color);
 }
@@ -60,10 +60,10 @@ header .icon-cart span {
     display: flex;
     width: 30px;
     height: 30px;
-    background-color: #8b0000;
+    background-color: var(--icon-color);
     justify-content: center;
     align-items: center;
-    color: #fff;
+    color: var(--secondary-font-color);
     border-radius: 50%;
     position: absolute;
     top: 35%;
@@ -96,7 +96,7 @@ header .icon-cart span {
 
 .main-info button {
     background-color: var(--primary-color);
-    color: #fff;
+    color: var(--secondary-font-color);
     padding: 5px 10px;
     border-radius: 5px;
     margin-top: 10px;
@@ -111,7 +111,7 @@ header .icon-cart span {
 
 .listProduct .item img {
     width: 90%;
-    filter: drop-shadow(0 20px 20px #000);
+    filter: drop-shadow(0 20px 20px var(--primary-font-color));
     border-radius: 20px;
     height: 50%;
     object-fit: cover;
@@ -135,7 +135,7 @@ header .icon-cart span {
 
 .listProduct .item button {
     background-color: var(--primary-color);
-    color: #fff;
+    color: var(--secondary-font-color);
     padding: 5px 10px;
     border-radius: 5px;
     margin-top: 10px;
@@ -213,7 +213,7 @@ footer svg {
 }
 
 .about-info a {
-    color: #fff;
+    color: var(--secondary-font-color);
 }
 
 .follow-us {
@@ -234,7 +234,7 @@ footer svg {
 }
 
 .social-media a {
-    color: #fff;
+    color: var(--secondary-font-color);
 }
 
 .bi--facebook {
@@ -347,7 +347,7 @@ footer svg {
 
 .message.error {
     background-color: #f8d7da;
-    color: #721c24;
+    color: var(--icon-color);
     border-color: #f5c6cb;
 }
 

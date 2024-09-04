@@ -105,6 +105,11 @@
     cursor: pointer;
 }
 
+.buttonCheckout:hover {
+    background-color: var(--light-primary-color);
+    transition: 0.5s;
+}
+
 .returnCart h1 {
     margin-top: 0;
 }
@@ -165,6 +170,11 @@
     font-weight: bold;
     height: 25px;
     cursor: pointer;
+}
+
+.removeItem:hover {
+    background-color: var(--light-primary-color);
+    transition: 0.5s;
 }
 
 .checkoutConfirmation {

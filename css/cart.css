@@ -3,7 +3,7 @@
 .cartTab {
     width: 450px;
     background-color: var(--primary-color);
-    color: #fff;
+    color: var(--secondary-font-color);
     position: fixed;
     inset: 0 -450px 0 auto;
     display: grid;
@@ -30,7 +30,7 @@
     align-items: center;
     text-align: center;
     background-color: var(--light-primary-color);
-    border: 2px solid #fff;
+    border: 2px solid var(--secondary-font-color);
     border-radius: 8px;
     height: 70px;
     padding: 0 20px;
@@ -38,7 +38,7 @@
 }
 
 .cartTab .btn p, .cartTab .btn a {
-    color: #fff;
+    color: var(--secondary-font-color);
     text-decoration: none;
     font-weight: 500;
     display: flex;
@@ -58,7 +58,7 @@
     bottom: 10px;
     left: 50%;
     width: 2px;
-    background-color: #fff;
+    background-color: var(--secondary-font-color);
     transform: translateX(-50%);
 }
 
@@ -71,7 +71,7 @@
     display: inline-block;
     width: 25px;
     height: 25px;
-    background-color: #fff;
+    background-color: var(--secondary-font-color);
     color: black;
     border-radius: 50%;
     cursor: pointer;
@@ -92,7 +92,7 @@
     text-align: center;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--secondary-font-color);
 }
 
 .cart-item-image {
@@ -114,8 +114,8 @@
     display: inline-block;
     width: 25px;
     height: 25px;
-    background-color: #fff;
-    color: #666;
+    background-color: var(--secondary-font-color);
+    color: var(--primary-font-color);
     border-radius: 50%;
     cursor: pointer;
 }
