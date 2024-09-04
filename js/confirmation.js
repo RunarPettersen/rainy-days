@@ -1,6 +1,5 @@
-import { setupLoader } from './assets/loader.js';
-import { addCartToHTML, changeQuantityCart } from './assets/cart.js';
-import { setupCartIcon } from './assets/cartIcon.js';
+import { setupLoader } from './utils/loader.js';
+import { setupCartIcon } from './utils/cartIcon.js';
 
 setupLoader();
 setupCartIcon();

@@ -32,7 +32,7 @@
 }
 
 .myProduct .item button:hover {
-    background-color: var(--mediumblue);
+    background-color: var(--light-primary-color);
     transition: 0.5s;
 }
 

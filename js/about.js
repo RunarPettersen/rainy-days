@@ -1,7 +1,7 @@
-import { addCartToHTML, changeQuantityCart } from './assets/cart.js';
-import { setupLoader } from './assets/loader.js';
-import { setActiveLink } from './assets/menu.js';
-import { setupCartIcon } from './assets/cartIcon.js';
+import { addCartToHTML, changeQuantityCart } from './utils/cart.js';
+import { setupLoader } from './utils/loader.js';
+import { setActiveLink } from './utils/menu.js';
+import { setupCartIcon } from './utils/cartIcon.js';
 
 setupLoader();
 setActiveLink();

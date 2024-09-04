@@ -1,15 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Atomic+Age&family=Pirata+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik+Maps&display=swap');
-
-:root {
-    --darkgreen: #0a3641;
-    --darkblue: #739db1;
-    --mediumblue: #115d70;
-}
+@import "./variables.css";
 
 body {
     font-family: "Poppins", sans-serif;
     margin: 0;
-    background-color: lightblue;
+    background-color: var(--background-color);
 }
 
 .container {
@@ -23,7 +18,7 @@ body {
 
 .menu-line a {
     text-transform: uppercase;
-    color: var(--darkgreen);
+    color: var(--primary-color);
     font-weight: 800;
     font-size: 2rem;
     text-decoration: none;
@@ -50,7 +45,7 @@ header {
     width: 900px;
     justify-content: space-evenly;
     text-transform: uppercase;
-    color: var(--darkgreen);
+    color: var(--light-primary-color);
     font-weight: 800;
     font-size: 2rem;
     text-decoration: none;
@@ -89,7 +84,7 @@ header .icon-cart span {
     width: 350px;
     height: 350px;
     border-radius: 50%;
-    border: 10px solid var(--darkgreen);
+    border: 10px solid var(--primary-color);
     object-fit: cover;
 }
 
@@ -100,7 +95,7 @@ header .icon-cart span {
 }
 
 .main-info button {
-    background-color: var(--darkgreen);
+    background-color: var(--primary-color);
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -110,7 +105,7 @@ header .icon-cart span {
 }
 
 .main-info button:hover {
-    background-color: var(--mediumblue);
+    background-color: var(--light-primary-color);
     transition: 0.5s;
 }
 
@@ -129,7 +124,7 @@ header .icon-cart span {
 }
 
 .listProduct .item {
-    background-color: var(--darkblue);
+    background-color: var(--main-color);
     padding: 20px;
     border-radius: 20px;
 }
@@ -139,7 +134,7 @@ header .icon-cart span {
 }
 
 .listProduct .item button {
-    background-color: var(--darkgreen);
+    background-color: var(--primary-color);
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -149,7 +144,7 @@ header .icon-cart span {
 }
 
 .listProduct .item button:hover {
-    background-color: var(--mediumblue);
+    background-color: var(--light-primary-color);
     transition: 0.5s;
 }
 
@@ -157,18 +152,6 @@ header .icon-cart span {
     padding: 4px;
     margin-right: 5px;
     border-radius: 5px;
-}
-
-.cartTab {
-    width: 450px;
-    background-color: var(--darkblue);
-    color: #fff;
-    position: fixed;
-    inset: 0 -450px 0 auto;
-    display: grid;
-    grid-template-rows: 70px 1fr 74px;
-    transition: .5s;
-    z-index: 999;
 }
 
 body.showCart .cartTab {
@@ -197,116 +180,6 @@ body.showCart .container, body.showCart header {
     animation: shake 0.5s;
 }
 
-.cartTab {
-    color: #000;
-}
-
-.cartTab h1 {
-    padding: 20px;
-    margin: 0;
-    font-weight: 500;
-}
-
-.empty-cart-message {
-    padding: 20px;
-    margin: 0;
-    font-weight: 500;
-}
-
-.cartTab .btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    background-color: var(--darkgreen);
-    border: 2px solid #fff;
-    border-radius: 8px;
-    height: 70px;
-    padding: 0 20px;
-    position: relative;
-}
-
-.cartTab .btn p, .cartTab .btn a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    margin: 0;
-    text-align: center;
-    min-width: 50%;
-    cursor: pointer;
-}
-
-.cartTab .btn::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    bottom: 10px;
-    left: 50%;
-    width: 2px;
-    background-color: #fff;
-    transform: translateX(-50%);
-}
-
-.cartTab .listCart img {
-    width: 100%;
-    border-radius: 10px;
-}
-
-.cartTab .listCart .image {
-    padding-left: 10px;
-    padding-top: 10px;
-}
-
-.cartTab .listCart .item {
-    display: grid;
-    grid-template-columns: 70px 140px 50px 50px 1fr;
-    gap: 10px;
-    text-align: center;
-    align-items: center;
-}
-
-.listCart .quantity span {
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    background-color: #fff;
-    color: #666;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.listCart .quantity span:nth-child(2) {
-    background-color: transparent;
-    color: #fff;
-}
-
-.listCart .item:nth-child(odd) {
-    background-color: #477286;
-    color: #fff;
-}
-
-.listCart .quantity.odd span {
-    background-color: #fff;
-    color: #000;
-}
-
-.listCart .quantity.even span {
-    background-color: #477286;
-    color: #fff;
-}
-
-.listCart {
-    overflow: auto;
-}
-
-.listCart::-webkit-scrollbar {
-    width: 0;
-}
-
 .total {
     text-align: end;
     margin-top: 10px;
@@ -331,7 +204,7 @@ footer svg {
 }
 
 .follow {
-    background-color: var(--darkgreen);
+    background-color: var(--primary-color);
 }
 
 .about-info {
@@ -427,7 +300,7 @@ footer svg {
 }
 
 .menu-line a.active {
-    color: #115d70;
+    color: var(--light-primary-color);
 }
 
 .loader {
@@ -452,7 +325,7 @@ footer svg {
     content: "";
     width: 75px;
     height: 75px;
-    border: 15px solid var(--darkgreen);
+    border: 15px solid var(--primary-color);
     border-top-color: #477286;
     border-radius: 50%;
     animation: loading 0.75s ease infinite;
@@ -479,7 +352,7 @@ footer svg {
 }
 
 .message.success {
-    background-color: var(--darkgreen);
+    background-color: var(--primary-color);
 }
 
 @keyframes loading {

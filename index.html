@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Rainy Days – the best rain clothes money can buy!">
     <title>Rainy Days - Home</title>
+    <link rel="icon" type="image/x-icon" href="/icons/rd-favicon96x96.png">
+    <link rel="icon" type="image/x-icon" href="/icons/rd-favicon32x32.png">
+    <link rel="icon" type="image/x-icon" href="/icons/rd-favicon16x16.png">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <script type="module" src="js/script.js"></script>
 </head>
 <body>
     
 <header>
-    <div class="logo"><a href="index.html"><img src="image/rainydayslogo02.png" alt="Rainy Days Logo"></a></div>
+    <div class="logo"><a href="/"><img src="image/rainydayslogo02.png" alt="Rainy Days Logo"></a></div>
     <div class="menu">
-        <div class="menu-line">
-            <div><a href="index.html" class="nav-link">Home</a></div>
-            <div><a href="product/index.html" class="nav-link">Products</a></div>
-            <div><a href="about/index.html" class="nav-link">About</a></div>
-        </div>
+        <nav class="menu-line">
+            <div><a href="/" class="nav-link">Home</a></div>
+            <div><a href="/product/" class="nav-link">Products</a></div>
+            <div><a href="/about/" class="nav-link">About</a></div>
+        </nav>
         <div class="icon-cart">
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
@@ -26,33 +31,38 @@
     </div>
 </header>
 
-<div class="cartTab">
-    <h1>Shopping Cart</h1>
-    <div class="listCart"></div>
-    <div class="btn">
-        <p class="close">CLOSE</p>
-        <a href="checkout/">CHECKOUT</a>
-    </div>
-</div>
-
-<div class="container">
-    <div class="main-heading">
-        <div class="heading-container">
-            <div class="main-image">
-                <img src="https://via.placeholder.com/350" alt="Random product image">
-            </div>
-            <div class="main-info">
-                <div class="main-title"><h1></h1></div>
-                <div class="main-description"></div>
-                <div class="main-price"></div>
-                <select class="sizeSelector" id="sizeSelector-placeholder" name="size-placeholder" aria-label="Size selector"></select>
-                <button class="addCart">Add To Cart</button>
+<main>
+    <section>
+        <div class="cartTab">
+            <h1>Shopping Cart</h1>
+            <div class="listCart"></div>
+            <div class="btn">
+                <p class="close">CLOSE</p>
+                <a href="checkout/">CHECKOUT</a>
             </div>
         </div>
-    </div>        
-    <div class="product-title">POPULAR PRODUCTS NOW</div>
-    <div class="listProduct"></div>
-</div>
+    </section>
+    <section></section>
+        <div class="container">
+            <div class="main-heading">
+                <div class="heading-container">
+                    <div class="main-image">
+                        <img src="https://via.placeholder.com/350" alt="Random product image">
+                    </div>
+                    <div class="main-info">
+                        <div class="main-title"><h1></h1></div>
+                        <div class="main-description"></div>
+                        <div class="main-price"></div>
+                        <select class="sizeSelector" id="sizeSelector-placeholder" name="size-placeholder" aria-label="Size selector"></select>
+                        <button class="addCart">Add To Cart</button>
+                    </div>
+                </div>
+            </div>        
+            <div class="product-title">POPULAR PRODUCTS NOW</div>
+            <div class="listProduct"></div>
+        </div>
+    </section>
+</main>
 
 <div class="loader"></div>
 
@@ -83,6 +93,5 @@
     </div>
 </footer>
 
-<script type="module" src="js/script.js"></script>
 </body>
 </html>

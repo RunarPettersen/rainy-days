@@ -1,0 +1,130 @@
+@import "./variables.css";
+
+.cartTab {
+    width: 450px;
+    background-color: var(--primary-color);
+    color: #fff;
+    position: fixed;
+    inset: 0 -450px 0 auto;
+    display: grid;
+    grid-template-rows: 70px 1fr 74px;
+    transition: .5s;
+    z-index: 999;
+}
+
+.cartTab h1 {
+    padding: 20px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.empty-cart-message {
+    padding: 20px;
+    margin: 0;
+    font-weight: 500;
+}
+
+.cartTab .btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    background-color: var(--light-primary-color);
+    border: 2px solid #fff;
+    border-radius: 8px;
+    height: 70px;
+    padding: 0 20px;
+    position: relative;
+}
+
+.cartTab .btn p, .cartTab .btn a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    margin: 0;
+    text-align: center;
+    min-width: 50%;
+    cursor: pointer;
+}
+
+.cartTab .btn::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 50%;
+    width: 2px;
+    background-color: #fff;
+    transform: translateX(-50%);
+}
+
+.cartTab .listCart .image {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.cartTab .listCart .item {
+    display: grid;
+    grid-template-columns: 70px 140px 50px 50px 1fr;
+    gap: 10px;
+    text-align: center;
+    align-items: center;
+}
+
+.listCart .quantity span {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-color: #fff;
+    color: black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.listCart {
+    overflow: auto;
+}
+
+.listCart::-webkit-scrollbar {
+    width: 0;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-item-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.cart-item-title, .cart-item-size, .cart-item-price {
+    margin: 0 10px;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-button {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-color: #fff;
+    color: #666;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.quantity-text {
+    margin: 0 5px;
+}

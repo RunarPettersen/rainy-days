@@ -19,3 +19,10 @@ export const setupCartIcon = () => {
         console.error('closeCart element not found');
     }
 };
+
+export const triggerShakeAnimation = (element) => {
+    element.classList.add('shake');
+    setTimeout(() => {
+        element.classList.remove('shake');
+    }, 500);
+};
