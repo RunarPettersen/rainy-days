@@ -2,27 +2,35 @@ export function setActiveLink() {
     const navLinks = document.querySelectorAll('.nav-link');
     let currentPath = window.location.pathname;
 
-    // Check if on GitHub Pages by looking for "/rainy-days" in the path
-    const isGitHubPages = currentPath.includes('/rainy-days');
+    // Detect if running on GitHub Pages by checking if the path includes the repo name (e.g., "/rainy-days")
+    const repoName = '/rainy-days'; // Update this if your repo name is different
+    const isGitHubPages = currentPath.includes(repoName);
+
+    // Adjust paths for GitHub Pages by removing the repo name from the path
+    if (isGitHubPages) {
+        currentPath = currentPath.replace(repoName, '');
+    }
+
+    // Normalize current path (remove trailing slash, make lowercase)
+    currentPath = currentPath.replace(/\/$/, '').toLowerCase() || '/';
 
     navLinks.forEach(link => {
-        // Get the relative path of the link href
+        // Create a relative link path based on the link's href attribute
         let linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname;
 
-        // Adjust paths if running on GitHub Pages
+        // Adjust link paths for GitHub Pages if necessary
         if (isGitHubPages) {
-            currentPath = currentPath.replace('/rainy-days', '');
-            linkPath = linkPath.replace('/rainy-days', '');
+            linkPath = linkPath.replace(repoName, '');
         }
 
-        // Remove trailing slashes for consistency
-        currentPath = currentPath.replace(/\/$/, '').toLowerCase();
-        linkPath = linkPath.replace(/\/$/, '').toLowerCase();
+        // Normalize link path (remove trailing slash, make lowercase)
+        linkPath = linkPath.replace(/\/$/, '').toLowerCase() || '/';
 
-        // Set active class based on matching paths
-        if ((currentPath === '' || currentPath === '/') && (link.getAttribute('href') === './' || link.getAttribute('href') === '/')) {
-            link.classList.add('active');
-        } else if (linkPath === currentPath) {
+        // Debugging statements to compare paths
+        console.log('Comparing:', { link: linkPath, current: currentPath });
+
+        // Set the active class if paths match
+        if (linkPath === currentPath) {
             link.classList.add('active');
         } else {
             link.classList.remove('active');
