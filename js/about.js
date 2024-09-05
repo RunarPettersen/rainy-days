@@ -18,7 +18,6 @@ const initApp = async () => {
         const response = await fetch(baseurl);
         const data = await response.json();
         products = data;
-        console.log('Products fetched:', products);
 
         const storedCart = localStorage.getItem('cart');
         if (storedCart) {
