@@ -163,7 +163,7 @@ body.showCart .container, body.showCart header {
 }
 
 .product-title {
-    font-size: x-large;
+    font-size: large;
     font-weight: 500;
     text-align: left;
     margin-top: 50px;
@@ -312,7 +312,7 @@ footer svg {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: lightblue;
+    background-color: var(--background-color);
     transition: opacity 0.75s, visibility 0.75s;
 }
 
@@ -420,17 +420,6 @@ footer svg {
     .main-image img {
         width: 300px;
         height: 300px;
-    }
-
-    .cartTab {
-        width: 100%;
-        inset: 0 -450px 0 auto;
-    }
-
-    .cartTab .listCart .item {
-        grid-template-columns: 60px 100px 35px 35px 1fr;
-        gap: 8px;
-        font-size: 14px;
     }
 
     .menu-line, .menu-line a {
