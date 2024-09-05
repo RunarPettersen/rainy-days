@@ -1,25 +1,26 @@
 export function setActiveLink() {
     const navLinks = document.querySelectorAll('.nav-link');
-    let currentPath = window.location.pathname.replace(/\/$/, '').toLowerCase();
+    let currentPath = window.location.pathname;
 
-    // Detect if the current environment is GitHub Pages
+    // Check if on GitHub Pages by looking for "/rainy-days" in the path
     const isGitHubPages = currentPath.includes('/rainy-days');
 
-    // Adjust current path if running on GitHub Pages by removing the base path '/rainy-days'
-    if (isGitHubPages) {
-        currentPath = currentPath.replace('/rainy-days', '');
-    }
-
     navLinks.forEach(link => {
-        let linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname.replace(/\/$/, '').toLowerCase();
+        // Get the relative path of the link href
+        let linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname;
 
-        // Adjust link paths to exclude '/rainy-days' if on GitHub Pages
+        // Adjust paths if running on GitHub Pages
         if (isGitHubPages) {
+            currentPath = currentPath.replace('/rainy-days', '');
             linkPath = linkPath.replace('/rainy-days', '');
         }
 
-        // Special handling for the home page
-        if ((link.getAttribute('href') === './' || link.getAttribute('href') === '/') && currentPath === '') {
+        // Remove trailing slashes for consistency
+        currentPath = currentPath.replace(/\/$/, '').toLowerCase();
+        linkPath = linkPath.replace(/\/$/, '').toLowerCase();
+
+        // Set active class based on matching paths
+        if ((currentPath === '' || currentPath === '/') && (link.getAttribute('href') === './' || link.getAttribute('href') === '/')) {
             link.classList.add('active');
         } else if (linkPath === currentPath) {
             link.classList.add('active');
