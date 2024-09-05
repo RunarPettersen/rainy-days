@@ -1,31 +1,19 @@
 export function setActiveLink() {
     const navLinks = document.querySelectorAll('.nav-link');
-
-    // Extract base path from GitHub Pages, e.g., "/rainy-days"
-    const basePath = window.location.pathname.split('/').slice(0, -1).join('/');
-
-    // Get the normalized current path relative to basePath
-    let currentPath = window.location.pathname.replace(basePath, '').replace(/\/$/, '').toLowerCase();
-
-    // Treat empty paths as root ('/')
-    if (currentPath === '') {
-        currentPath = '/';
-    }
+    const currentPath = window.location.pathname.toLowerCase();
 
     navLinks.forEach(link => {
-        // Normalize link paths to compare correctly
-        let linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname.replace(basePath, '').replace(/\/$/, '').toLowerCase();
+        const linkPath = new URL(link.href, window.location.origin).pathname.toLowerCase();
 
-        // Treat empty paths as root ('/')
-        if (linkPath === '') {
-            linkPath = '/';
-        }
-
-        // Debugging logs
+        // Debugging logs to see the paths being compared
         console.log(`Comparing: {link: '${linkPath}', current: '${currentPath}'}`);
 
-        // Compare and set 'active' class
-        if (linkPath === currentPath) {
+        // Explicitly match each link to its corresponding path
+        if (
+            (linkPath === '/' && currentPath === '/') || // Home link
+            (linkPath === '/product/' && currentPath.includes('/product')) || // Products link
+            (linkPath === '/about/' && currentPath.includes('/about')) // About link
+        ) {
             link.classList.add('active');
         } else {
             link.classList.remove('active');
