@@ -18,7 +18,6 @@ The main task was to create a functioning shopping system where users could add 
 
 ## Contact
 
-This is where you can leave your social links for people to contact you, such as a LinkedIn profile or Twitter link e.g.
 
 [My Facebook page]([www.twitter.com](https://www.facebook.com/runarpettersen/))
 
