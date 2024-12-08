@@ -19,6 +19,6 @@ The main task was to create a functioning shopping system where users could add 
 ## Contact
 
 
-[My Facebook page]([www.twitter.com](https://www.facebook.com/runarpettersen/))
+[My Facebook page](https://www.facebook.com/runarpettersen/)
 
-[My LinkedIn page]([www.linkedin.com](https://www.linkedin.com/in/runar-pettersen-879b7aab/))
+[My LinkedIn page](https://www.linkedin.com/in/runar-pettersen-879b7aab/)
