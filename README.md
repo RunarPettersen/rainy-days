@@ -1,6 +1,6 @@
 # Rainy Days
 
-![image](https://user-images.githubusercontent.com/52622303/164316813-4b12d99f-aeb7-4069-85cf-e72b3a50ac99.png)
+![image](https://raw.githubusercontent.com/RunarPettersen/rainy-days/refs/heads/main/image/rainydays-home.jpg)
 
 Rainy Days was our first assignment at Noroff focused on learning JavaScript.
 
